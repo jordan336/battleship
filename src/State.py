@@ -1,19 +1,92 @@
 
+from Action import Action
+
+"""
+State
+
+Class representing the current game state, including each Agent's ships
+and torpedos.  The State should contain all information necessary for
+an Agent to make a decision about how to act.
+
+TODO: Each Agent should have statistics, like number of total shots, number of 
+      hits, etc.
+"""
 class State:
 
-    def __init__(self, gameBoard, ships, torpedos, numAgents):
-        self.gameBoard = gameBoard
+    """
+    init()
+
+    Create a new state.
+
+    - gameBoards: List of Grids, one for each Agent.  The Grid for an agent
+                  is the Grid with that Agent's ships.
+                  TODO: This scheme wont work with more than 2 players.
+
+    - ships     : List of list of Ships, one list for each Agent.
+
+    - torpedos  : List of list of Torpedos, one list for each Agent.  The list
+                  of torpedos is the list of torpedos the Agent has yet to fire.
+
+    - numAgents : The total number of agents 
+    """
+    def __init__(self, gameBoards, ships, torpedos, numAgents):
+        self.gameBoards = gameBoards
         self.ships = ships
         self.torpedos = torpedos
         self.numAgents = numAgents
         self.nextAgentToMove= 0
 
-    def isEnd(self):
-        #TODO
-    
-    def getScore(self, agentIndex):
-        # TODO
 
+    """
+    isEnd()
+
+    For every agent's list of ships, check if any ship is not sunk.
+    If the every ship for an agent is sunk, return true.  Otherwise,
+    all agents have at least one non-sunk ship and return false.
+    """
+    def isEnd(self):
+        for agentShips in self.ships:
+            agentSunk = True
+            for ship in agentShips:
+                if not ship.isSunk():
+                    agentSunk = False
+            if agentSunk:
+                return True
+        return False
+    
+
+    """
+    getScore()
+
+    Return a number representing the current game score for the given agent.
+    Currently, add up the score from every opponent ship.
+
+    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
+          base the score on the Agent's statisitics, see above comment.
+
+    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    """
+    def getScore(self, agentIndex):
+        score = 0
+        for agentInd in range(self.numAgents):
+            if agentInd == agentIndex:
+                continue
+            for ship in self.ships[agentInd]:
+                score += ship.getScore()
+        return score
+
+
+    """
+    generateSuccessor()
+    
+    Given an Action, generate a new State representing the game after the
+    Action is executed.
+    """
     def generateSuccessor(self, action):
-        # TODO
+        if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
+            torpedo = action.getTorpedo()
+            print "Action: Firing torpedo at: ", torpedo.getTargetPosition()
+            # TODO
+        else:
+            print "Other action"
 

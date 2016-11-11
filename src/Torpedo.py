@@ -5,6 +5,11 @@ class Torpedo:
         self.torpedoType = torpedoType
         self.targetPosition = targetPosition
 
+
+    def getTargetPosition(self):
+        return self.targetPosition
+
+
     def getDamagePattern(self):
         raise NotImplemented
 

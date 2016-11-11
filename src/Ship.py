@@ -7,12 +7,29 @@ class Ship:
     ORIENTATION_270_DEG = '270'
 
 
-    def __init__(self, name, boardPosition, orientation, damageList):
+    """
+    __init__
+    
+    Create a ship.
+
+    - name:          Unique identifier for the ship
+
+    - boardPosition: Position representing the first segment of this ship
+
+    - orientation:   Ship orientation, in clockwise degrees
+
+    - damageList:    List of integers representing the damage points remaining.  
+                     Each entry in the list represents one segment of the ship.
+
+    - value:         The total value this ship for the opponent if sunk
+    """
+    def __init__(self, name, boardPosition, orientation, damageList, value):
         self.name = name
         self.boardPosition = boardPosition
         self.orientation = orientation
         self.length = len(damageList)
         self.damageList = damageList
+        self.value = value
         self.sunk = False
 
 
@@ -26,6 +43,23 @@ class Ship:
 
     def isSunk(self):
         return self.sunk
+
+
+    """
+    getScore()
+    
+    Return the number of points earned for the damage done to this ship.
+    The score is defined as the percentage of ship segments that are completely
+    destroyed times the total ship value.
+
+    TODO: support more sophisticated score functions?
+    """
+    def getScore(self):
+        amountDamaged = 0.0
+        for damage in damageList:
+            if damage == 0:
+                amountDamaged += 1
+        return self.value * (amountDamaged / self.length)
 
 
     def takeDamage(self):
