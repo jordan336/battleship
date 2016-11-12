@@ -21,7 +21,7 @@ if __name__ == '__main__':
     print "(1, 0)", grid.getValidNeighbors(Position(1, 0))
     print "(1, 1)", grid.getValidNeighbors(Position(1, 1))
     
-    carrier = Ship("carrier", Position(1, 1), '0', [0, 0, 0, 0, 0], 10)
+    carrier = Ship("carrier", Position(1, 1), '0', [1, 1, 1, 1, 1], 10)
 
     torpedo = ClassicTorpedo(Position(1, 1))
     print "(1, 1) damage: ", torpedo.getDamagePattern(Position(1, 1))

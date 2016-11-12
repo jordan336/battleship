@@ -33,6 +33,8 @@ class Ship:
         self.value = value
         self.sunk = False
 
+    def getName(self):
+        return self.name
 
     def getPosition(self):
         return self.position
@@ -48,7 +50,9 @@ class Ship:
     """
     hasShip()
     
-    Returns true if the ship occupies the square denoted by the given position.
+    Returns true if the ship occupies the square denoted by the given position. Returns false otherwise
+    
+    Use shipSegmentIndex() for a more informative version that provides the relative index of the ship instead of simple True/False.
     """    
     def hasShip(self, position):
         if self.orientation is self.ORIENTATION_0_DEG:
@@ -59,6 +63,28 @@ class Ship:
             return (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - self.length - 1)
         elif self.orientation is self.ORIENTATION_270_DEG:
             return (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - self.length - 1)
+    
+    """
+    shipSegmentIndex()
+    
+    Returns the relative segment index of the ship that corresponds to the given position. If the given position is not occupied by the ship, returns -1.
+    
+    For example, assume we have a ship of length 5 starting at position (1, 1) with 90 deg orientation. If we strike at position (1, 3), we will return index of 2. If we strike at position (2, 2) we miss and return index of -1.
+    """    
+    def shipSegmentIndex(self, position):
+        if self.orientation is self.ORIENTATION_0_DEG:
+            if (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + self.length - 1):
+                return abs(position.x - self.boardPosition.x)
+        elif self.orientation is self.ORIENTATION_90_DEG:
+            if (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + self.length - 1):
+                return abs(position.y - self.boardPosition.y)
+        elif self.orientation is self.ORIENTATION_180_DEG:
+            if (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - self.length - 1):
+                return abs(position.x - self.boardPosition.x)
+        elif self.orientation is self.ORIENTATION_270_DEG:
+            if (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - self.length - 1):
+                return abs(position.y - self.boardPosition.y)
+        return -1
     
 
     """
@@ -78,10 +104,13 @@ class Ship:
         return self.value * (amountDamaged / self.length)
 
 
-    def takeDamage(self):
-        raise NotImplemented
+    def takeDamage(self, index):
+        if index >= 0 and index < len(self.damageList):
+            self.damageList[index] -= 1
+        if sum(self.damageList) == 0:
+            self.sunk = True
 
 
     def getDamage(self):
-        raise NotImplemented
+        return sum(self.damageList)
 

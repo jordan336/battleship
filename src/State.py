@@ -111,9 +111,13 @@ class State:
             torpedo = action.getTorpedo()
             print "Action: Firing torpedo at: ", torpedo.getTargetPosition()
             for ship in self.ships:
-                if ship.hasShip(torpedo.getTargetPosition()):
-                    print "Hit!!"
+                shipHitIndex = ship.shipSegmentIndex(torpedo.getTargetPosition())
+                if shipHitIndex >= 0:
+                    print ship.getName() + " has been hit!!"
                     self.gameBoards[agentIndex].setHitPosition(torpedo.getTargetPosition())
+                    ship.takeDamage(shipHitIndex)
+                    print "Hit points remaining:"
+                    print ship.getDamage()
                 else:
                     print "Missed!!"
                     self.gameBoards[agentIndex].setMissedPosition(torpedo.getTargetPosition())
