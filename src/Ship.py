@@ -1,3 +1,4 @@
+from Position import Position
 
 class Ship:
 
@@ -44,6 +45,21 @@ class Ship:
     def isSunk(self):
         return self.sunk
 
+    """
+    hasShip()
+    
+    Returns true if the ship occupies the square denoted by the given position.
+    """    
+    def hasShip(self, position):
+        if self.orientation is self.ORIENTATION_0_DEG:
+            return (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + self.length - 1)
+        elif self.orientation is self.ORIENTATION_90_DEG:
+            return (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + self.length - 1)
+        elif self.orientation is self.ORIENTATION_180_DEG:
+            return (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - self.length - 1)
+        elif self.orientation is self.ORIENTATION_270_DEG:
+            return (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - self.length - 1)
+    
 
     """
     getScore()

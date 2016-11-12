@@ -6,13 +6,27 @@ class Grid:
     def __init__(self, width, height):
         self.width = width
         self.height = height
+        self.missed = []
+        self.hit = []
 
     def getWidth(self):
         return self.width
 
     def getHeight(self):
         return self.height
+        
+    def getHitPositions(self):
+        return self.hit
+    
+    def getMissedPositions(self):
+        return self.missed
 
+    def setHitPosition(self, position):
+        self.hit.append(position)
+    
+    def setMissedPosition(self, position):
+        self.missed.append(position)
+        
     def getValidNeighbors(self, position):
         neighbors = []
 

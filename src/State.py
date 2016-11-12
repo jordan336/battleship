@@ -1,5 +1,6 @@
 
 from Action import Action
+from Position import Position
 
 """
 State
@@ -74,7 +75,30 @@ class State:
             for ship in self.ships[agentInd]:
                 score += ship.getScore()
         return score
+        
+    """
+    hasShip(self, position)
 
+    Return a list of legal target positions for the current state.
+
+    """ 
+
+    """
+    actions()
+
+    Return a list of legal target positions for the current state.
+
+    """        
+    def legalTargets(self, agentIndex=0):
+        legalTargets = []
+        missedPos = self.gameBoards[agentIndex].getMissedPositions()
+        hitPos = self.gameBoards[agentIndex].getHitPositions()
+        for i in range(self.gameBoards[agentIndex].width):
+            for k in range(self.gameBoards[agentIndex].height):
+                if Position(i, k) not in missedPos and Position(i, k) not in hitPos :
+                    legalTargets.append(Position(i, k))
+        return legalTargets
+                
 
     """
     generateSuccessor()
@@ -82,10 +106,17 @@ class State:
     Given an Action, generate a new State representing the game after the
     Action is executed.
     """
-    def generateSuccessor(self, action):
+    def generateSuccessor(self, action, agentIndex=0):
         if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
             torpedo = action.getTorpedo()
             print "Action: Firing torpedo at: ", torpedo.getTargetPosition()
+            for ship in self.ships:
+                if ship.hasShip(torpedo.getTargetPosition()):
+                    print "Hit!!"
+                    self.gameBoards[agentIndex].setHitPosition(torpedo.getTargetPosition())
+                else:
+                    print "Missed!!"
+                    self.gameBoards[agentIndex].setMissedPosition(torpedo.getTargetPosition())
             # TODO
         else:
             print "Other action"
