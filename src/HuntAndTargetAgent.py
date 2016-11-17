@@ -1,7 +1,6 @@
 from Agent import Agent
 from Position import Position
 from TorpedoAction import TorpedoAction
-from TextDisplay import TextDisplay
 import random
 
 class HuntAndTargetAgent(Agent):
@@ -9,11 +8,6 @@ class HuntAndTargetAgent(Agent):
     def __init__(self, name, rules):
         self.name = name
         self.rules = rules
-   
-    def drawCurrentState(self, state):
-        board = state.getBoards()[0]
-        ships = state.getShips()
-        TextDisplay.draw(board, ships, True) 
    
     def placeShip(self, ship): 
         raise NotImplemented

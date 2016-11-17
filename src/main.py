@@ -3,6 +3,7 @@ from Game import Game
 from ClassicRules import ClassicRules
 from MiniGameRules import MiniGameRules
 from HumanAgent import HumanAgent
+from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
 
 if __name__ == '__main__':
@@ -17,6 +18,7 @@ if __name__ == '__main__':
     
     # Choose the agent to use for the game.
     #agents = [HumanAgent("Kai", rules)]
+    #agents = [RandomAgent("Random", rules)]
     agents = [HuntAndTargetAgent("HuntAndTarget", rules)]
     battleshipGame = Game(rules, agents)
     for i in range(numGamesToPlay):
