@@ -15,11 +15,11 @@ class TextDisplay:
         #raise NotImplemented
         missedPos = board.getMissedPositions()
         hitPos = board.getHitPositions()
-        for i in range(board.width):
+        for h in range(board.height):
             helperDrawHorizLine(board.width)
             rowOutput = "|"
-            for k in range(board.height):
-                pos = Position(i, k)
+            for w in range(board.width):
+                pos = Position(w, h)
                 if pos in missedPos:
                     rowOutput += ' o ' 
                 elif pos in hitPos:

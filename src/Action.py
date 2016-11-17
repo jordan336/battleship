@@ -21,13 +21,15 @@ class Action:
     #ACTION_TYPE_MOVE_SHIP = "moveShip" 
 
 
-    def __init__(self, type):
+    def __init__(self, type, target):
         self.actionType = type
-
+        self.actionTarget = target
 
     def getType(self):
         return self.actionType
-
+        
+    def getTarget(self):
+        return self.actionTarget
 
     def getTorpedo(self):
         raise NotImplemented 

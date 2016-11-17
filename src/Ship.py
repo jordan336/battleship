@@ -39,6 +39,8 @@ class Ship:
     def getPosition(self):
         return self.position
 
+    def getLength(self):
+        return self.length
 
     def getOrientation(self):
         return self.orientation
@@ -56,13 +58,13 @@ class Ship:
     """    
     def hasShip(self, position):
         if self.orientation is self.ORIENTATION_0_DEG:
-            return (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + self.length - 1)
+            return (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + (self.length - 1))
         elif self.orientation is self.ORIENTATION_90_DEG:
-            return (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + self.length - 1)
+            return (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + (self.length - 1))
         elif self.orientation is self.ORIENTATION_180_DEG:
-            return (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - self.length - 1)
+            return (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - (self.length - 1))
         elif self.orientation is self.ORIENTATION_270_DEG:
-            return (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - self.length - 1)
+            return (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - (self.length - 1))
     
     """
     shipSegmentIndex()
@@ -103,6 +105,15 @@ class Ship:
                 amountDamaged += 1
         return self.value * (amountDamaged / self.length)
 
+    """
+    place()
+    
+    Updates the ship's position and orientation to the values provided.
+    
+    """
+    def place(self, position, orientation):
+        self.boardPosition = position
+        self.orientation = orientation
 
     def takeDamage(self, index):
         if index >= 0 and index < len(self.damageList):

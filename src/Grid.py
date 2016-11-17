@@ -27,6 +27,26 @@ class Grid:
     def setMissedPosition(self, position):
         self.missed.append(position)
         
+    def queryPosition(position):
+        if position in self.hit:
+            return 'hit'
+        elif position in self.missed:
+            return 'missed'
+        else:
+            return 'unknown'
+            
+    def queryPositionHit(position):
+        if position in self.hit:
+            return True
+        else:
+            return False
+
+    def queryPositionMissed(position):
+        if position in self.missed:
+            return True
+        else:
+            return False
+        
     def getValidNeighbors(self, position):
         neighbors = []
 

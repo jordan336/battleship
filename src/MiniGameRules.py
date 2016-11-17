@@ -4,22 +4,18 @@ from Ship import Ship
 from ClassicTorpedo import ClassicTorpedo
 from Grid import Grid
 
-class ClassicRules(Rules):
+class MiniGameRules(Rules):
 
     @staticmethod
     def getBoards():
         # Board dimensions
-        return [Grid(10, 10)]
+        return [Grid(5, 5)]
 
     @staticmethod
     def getShips():
         # Ship positions/orientations will be updated later when placing ships
-        carrier = Ship("Carrier", Position(0, 0), '0', [1, 1, 1, 1, 1], 10)
-        battleship = Ship("Battleship", Position(0, 0), '0', [1, 1, 1, 1], 8)
-        cruiser = Ship("Cruiser", Position(0, 0), '0', [1, 1, 1], 6)
-        submarine = Ship("Submarine", Position(0, 0), '0', [1, 1, 1], 6)
         destroyer = Ship("Destroyer", Position(0, 0), '0', [1, 1], 4)
-        return [carrier, battleship, cruiser, submarine, destroyer]
+        return [destroyer]
 
     """
         getTorpedos

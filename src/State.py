@@ -36,8 +36,19 @@ class State:
         self.torpedos = torpedos
         self.numAgents = numAgents
         self.nextAgentToMove= 0
+        self.score = 0
+        self.moveCount = 0
 
+        
+    def getBoards(self):
+        return self.gameBoards
 
+    def getShips(self):
+        return self.ships
+
+    def currentAgent(self):
+        return self.nextAgentToMove
+        
     """
     isEnd()
 
@@ -46,13 +57,12 @@ class State:
     all agents have at least one non-sunk ship and return false.
     """
     def isEnd(self):
-        for agentShips in self.ships:
-            agentSunk = True
-            for ship in agentShips:
-                if not ship.isSunk():
-                    agentSunk = False
-            if agentSunk:
-                return True
+        agentSunk = True
+        for ship in self.ships:
+            if not ship.isSunk():
+                agentSunk = False
+        if agentSunk:
+            return True
         return False
     
 
@@ -76,12 +86,6 @@ class State:
                 score += ship.getScore()
         return score
         
-    """
-    hasShip(self, position)
-
-    Return a list of legal target positions for the current state.
-
-    """ 
 
     """
     actions()
@@ -108,19 +112,24 @@ class State:
     """
     def generateSuccessor(self, action, agentIndex=0):
         if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
-            torpedo = action.getTorpedo()
-            print "Action: Firing torpedo at: ", torpedo.getTargetPosition()
+            print "Action: Firing torpedo at: ", action.getTarget()
+            hit = False
             for ship in self.ships:
-                shipHitIndex = ship.shipSegmentIndex(torpedo.getTargetPosition())
+                shipHitIndex = ship.shipSegmentIndex(action.getTarget())
                 if shipHitIndex >= 0:
+                    hit = True
                     print ship.getName() + " has been hit!!"
-                    self.gameBoards[agentIndex].setHitPosition(torpedo.getTargetPosition())
+                    self.gameBoards[agentIndex].setHitPosition(action.getTarget())
                     ship.takeDamage(shipHitIndex)
-                    print "Hit points remaining:"
-                    print ship.getDamage()
-                else:
-                    print "Missed!!"
-                    self.gameBoards[agentIndex].setMissedPosition(torpedo.getTargetPosition())
+                    if ship.getDamage() == 0:
+                        print ship.getName() + " has been sunk!!" 
+                    else:
+                        print "Ship's hit points remaining: ", ship.getDamage()
+                    break
+            if not hit:
+                print "Missed!!"
+                self.gameBoards[agentIndex].setMissedPosition(action.getTarget())
+            #UpdateScores
             # TODO
         else:
             print "Other action"
