@@ -21,7 +21,16 @@ class Game:
         board = self.currentState.getBoards()[0]
         ships = self.currentState.getShips()
         TextDisplay.draw(board, ships, True) 
-        
+ 
+ 
+    """
+        placeShips()
+
+        Given a game board and list of ships, place the ships on the game board randomly and assign each ship with corresponding positions and orientations. 
+
+        TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
+
+    """
     def placeShips(self, board, ships):
         placedShips = []
         #TextDisplay.draw(board, placedShips, True)
@@ -38,7 +47,14 @@ class Game:
                         #print ship.getLength(), tryPos, orientation
                         #TextDisplay.draw(board, placedShips, True)
                         fits = True
-                    
+
+    """
+        placeShips()
+
+        Used by placeShips() to determine whether the ship with given length and position/orientation will fit on the game board. Return false if the ship will overlap with an existing ship that has already been placed, or falls out of the board's range. 
+
+        TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
+    """                        
     def shipFits(self, board, placedShips, length, headPosition, orientation):
         (x, y) = headPosition.getPosition()
         for i in range(length):

@@ -24,7 +24,7 @@ class Ship:
 
     - value:         The total value this ship for the opponent if sunk
     """
-    def __init__(self, name, boardPosition, orientation, damageList, value):
+    def __init__(self, name, damageList, value, boardPosition=Position(0, 0), orientation='0'):
         self.name = name
         self.boardPosition = boardPosition
         self.orientation = orientation
