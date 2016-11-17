@@ -93,7 +93,9 @@ class Game:
             self.currentState.generateSuccessor(action, currentAgent, verbose)
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
-        print 'Number of moves taken:', self.currentState.getMoveCount(currentAgent)
-        print 'Score:', self.currentState.getScore(currentAgent)
+        finalNumMoves = self.currentState.getMoveCount(currentAgent)
+        finalScore = self.currentState.getScore(currentAgent)
+        print 'Moves:', finalNumMoves, 'Score:', finalScore
+        return finalNumMoves, finalScore
 
  
