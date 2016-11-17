@@ -14,11 +14,11 @@ class ClassicRules(Rules):
     @staticmethod
     def getShips():
         # Ship positions/orientations will be updated later when placing ships
-        carrier = Ship("Carrier", [1, 1, 1, 1, 1], 10)
-        battleship = Ship("Battleship", [1, 1, 1, 1], 8)
-        cruiser = Ship("Cruiser", [1, 1, 1], 6)
-        submarine = Ship("Submarine", [1, 1, 1], 6)
-        destroyer = Ship("Destroyer", [1, 1], 4)
+        carrier = Ship("Carrier", [1, 1, 1, 1, 1], 100)
+        battleship = Ship("Battleship", [1, 1, 1, 1], 80)
+        cruiser = Ship("Cruiser", [1, 1, 1], 60)
+        submarine = Ship("Submarine", [1, 1, 1], 60)
+        destroyer = Ship("Destroyer", [1, 1], 40)
         return [carrier, battleship, cruiser, submarine, destroyer]
 
     """

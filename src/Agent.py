@@ -6,7 +6,7 @@ class Agent:
 
     def __init__(self, name):
         self.name = name
-   
+
     def placeShip(self, Ship): 
         raise NotImplemented
 

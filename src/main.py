@@ -3,14 +3,16 @@ from Game import Game
 from ClassicRules import ClassicRules
 from MiniGameRules import MiniGameRules
 from HumanAgent import HumanAgent
+from HuntAndTargetAgent import HuntAndTargetAgent
 
 if __name__ == '__main__':
 
     # Mini game is 5x5 for a quick game, classic game is 10x10
-    #rules = ClassicRules
-    rules = MiniGameRules
+    rules = ClassicRules
+    #rules = MiniGameRules
     
-    agents = [HumanAgent("Kai", rules)]
+    #agents = [HumanAgent("Kai", rules)]
+    agents = [HuntAndTargetAgent("HuntAndTarget", rules)]
     battleshipGame = Game(rules, agents)
     battleshipGame.run()
     #battleshipGame.drawCurrentState()

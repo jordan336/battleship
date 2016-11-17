@@ -3,6 +3,7 @@ from Position import Position
 from State import State
 from TextDisplay import TextDisplay
 import random
+from HumanAgent import HumanAgent
 
 """
     The Game manages the control flow, soliciting actions from agents.
@@ -84,9 +85,15 @@ class Game:
         while not self.currentState.isEnd():
             #self.drawCurrentState()
             currentAgent = self.currentState.currentAgent()
+            if type(self.agents[currentAgent]) is HumanAgent:
+                verbose = True
+            else: 
+                verbose = False
             action = self.agents[currentAgent].getAction(self.currentState)
-            self.currentState.generateSuccessor(action, currentAgent)
+            self.currentState.generateSuccessor(action, currentAgent, verbose)
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
+        print 'Number of moves taken:', self.currentState.getMoveCount(currentAgent)
+        print 'Score:', self.currentState.getScore(currentAgent)
 
  

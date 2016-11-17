@@ -75,16 +75,16 @@ class Ship:
     """    
     def shipSegmentIndex(self, position):
         if self.orientation is self.ORIENTATION_0_DEG:
-            if (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + self.length - 1):
+            if (position.y == self.boardPosition.y and position.x >= self.boardPosition.x and position.x <= self.boardPosition.x + (self.length - 1)):
                 return abs(position.x - self.boardPosition.x)
         elif self.orientation is self.ORIENTATION_90_DEG:
-            if (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + self.length - 1):
+            if (position.x == self.boardPosition.x and position.y >= self.boardPosition.y and position.y <= self.boardPosition.y + (self.length - 1)):
                 return abs(position.y - self.boardPosition.y)
         elif self.orientation is self.ORIENTATION_180_DEG:
-            if (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - self.length - 1):
+            if (position.y == self.boardPosition.y and position.x <= self.boardPosition.x and position.x >= self.boardPosition.x - (self.length - 1)):
                 return abs(position.x - self.boardPosition.x)
         elif self.orientation is self.ORIENTATION_270_DEG:
-            if (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - self.length - 1):
+            if (position.x == self.boardPosition.x and position.y <= self.boardPosition.y and position.y >= self.boardPosition.y - (self.length - 1)):
                 return abs(position.y - self.boardPosition.y)
         return -1
     
@@ -100,7 +100,7 @@ class Ship:
     """
     def getScore(self):
         amountDamaged = 0.0
-        for damage in damageList:
+        for damage in self.damageList:
             if damage == 0:
                 amountDamaged += 1
         return self.value * (amountDamaged / self.length)
@@ -118,7 +118,9 @@ class Ship:
     def takeDamage(self, index):
         if index >= 0 and index < len(self.damageList):
             self.damageList[index] -= 1
-        if sum(self.damageList) == 0:
+        if self.damageList[index] < 0:
+            self.damageList[index] = 0
+        if sum(self.damageList) <= 0:
             self.sunk = True
 
 

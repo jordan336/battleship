@@ -36,8 +36,11 @@ class State:
         self.torpedos = torpedos
         self.numAgents = numAgents
         self.nextAgentToMove= 0
-        self.score = 0
-        self.moveCount = 0
+        self.scores = []
+        self.moveCounts = []
+        for i in range(numAgents):
+            self.scores.append(0)
+            self.moveCounts.append(0)
 
         
     def getBoards(self):
@@ -78,14 +81,38 @@ class State:
     - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
     """
     def getScore(self, agentIndex):
+        return self.scores[agentIndex] 
+ 
+    """
+    calcScore()
+
+    Return a number representing the current game score for the given agent.
+    Currently, add up the score from every opponent ship.
+
+    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
+          base the score on the Agent's statisitics, see above comment.
+
+    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    """
+    def calcScore(self, agentIndex):
         score = 0
-        for agentInd in range(self.numAgents):
-            if agentInd == agentIndex:
-                continue
-            for ship in self.ships[agentInd]:
-                score += ship.getScore()
-        return score
-        
+        for ship in self.ships:
+            score += ship.getScore()
+        score -= self.moveCounts[agentIndex]
+        self.scores[agentIndex] = score
+
+    """
+    getMoveCount()
+
+    Return a number representing the number moves taken.
+
+    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
+          base the score on the Agent's statisitics, see above comment.
+
+    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    """
+    def getMoveCount(self, agentIndex):
+        return self.moveCounts[agentIndex] 
 
     """
     actions()
@@ -110,26 +137,29 @@ class State:
     Given an Action, generate a new State representing the game after the
     Action is executed.
     """
-    def generateSuccessor(self, action, agentIndex=0):
+    def generateSuccessor(self, action, agentIndex=0, verbose=False):
         if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
-            print "Action: Firing torpedo at: ", action.getTarget()
+            if verbose: print "Action: Firing torpedo at: ", action.getTarget()
             hit = False
             for ship in self.ships:
                 shipHitIndex = ship.shipSegmentIndex(action.getTarget())
                 if shipHitIndex >= 0:
                     hit = True
-                    print ship.getName() + " has been hit!!"
+                    if verbose: print ship.getName() + " has been hit!!"
                     self.gameBoards[agentIndex].setHitPosition(action.getTarget())
                     ship.takeDamage(shipHitIndex)
-                    if ship.getDamage() == 0:
-                        print ship.getName() + " has been sunk!!" 
-                    else:
-                        print "Ship's hit points remaining: ", ship.getDamage()
+                    if verbose: 
+                        if ship.getDamage() == 0:
+                            print ship.getName() + " has been sunk!!" 
+                        else:
+                            print "Ship's hit points remaining: ", ship.getDamage()
                     break
             if not hit:
-                print "Missed!!"
+                if verbose: print "Missed!!"
                 self.gameBoards[agentIndex].setMissedPosition(action.getTarget())
             #UpdateScores
+            self.moveCounts[agentIndex] += 1
+            self.calcScore(agentIndex)
             # TODO
         else:
             print "Other action"

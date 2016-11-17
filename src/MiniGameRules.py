@@ -14,7 +14,7 @@ class MiniGameRules(Rules):
     @staticmethod
     def getShips():
         # Ship positions/orientations will be updated later when placing ships
-        destroyer = Ship("Destroyer", [1, 1], 4)
+        destroyer = Ship("Destroyer", [1, 1], 40)
         return [destroyer]
 
     """
