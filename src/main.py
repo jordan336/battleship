@@ -1,15 +1,5 @@
 
-from Position import Position
-from Grid import Grid
-from ClassicTorpedo import ClassicTorpedo
-from TorpedoAction import TorpedoAction
-from State import State
-from Ship import Ship
-from TextDisplay import TextDisplay
-
 from Game import Game
-from Action import Action
-from Rules import Rules
 from ClassicRules import ClassicRules
 from MiniGameRules import MiniGameRules
 from HumanAgent import HumanAgent

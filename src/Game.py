@@ -1,9 +1,6 @@
 
 from Position import Position
-from Grid import Grid
 from State import State
-from Action import Action
-from Rules import Rules
 from TextDisplay import TextDisplay
 import random
 

@@ -38,4 +38,6 @@ class TextDisplay:
                 rowOutput += '|'
             print rowOutput
         helperDrawHorizLine(board.width)  
+        print 'Coordinates are zero-indexed and origin is at the upper left corner.'
+        print 'x == Hit; o == Missed; . == Hidden ship location'
  
