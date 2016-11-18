@@ -15,29 +15,30 @@ class Ship:
 
     - name:          Unique identifier for the ship
 
-    - boardPosition: Position representing the first segment of this ship
-
-    - orientation:   Ship orientation, in clockwise degrees
-
     - damageList:    List of integers representing the damage points remaining.  
                      Each entry in the list represents one segment of the ship.
 
     - value:         The total value this ship for the opponent if sunk
+
+    - boardPosition: Position representing the first segment of this ship
+
+    - orientation:   Ship orientation, in clockwise degrees
+
     """
     def __init__(self, name, damageList, value, boardPosition=Position(0, 0), orientation='0'):
         self.name = name
+        self.damageList = damageList
+        self.value = value
         self.boardPosition = boardPosition
         self.orientation = orientation
         self.length = len(damageList)
-        self.damageList = damageList
-        self.value = value
         self.sunk = False
 
     def getName(self):
         return self.name
 
     def getPosition(self):
-        return self.position
+        return self.boardPosition
 
     def getLength(self):
         return self.length

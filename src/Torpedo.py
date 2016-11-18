@@ -13,8 +13,11 @@ class Torpedo:
         return self.targetPosition
 
     def setTargetPosition(self, position):
-        self.targetPosition = position
+        if isinstance(position, Position):
+            self.targetPosition = position
+        else:
+            raise TypeError("Position type expected")
 
-    def getDamagePattern(self):
+    def getDamage(self, position):
         raise NotImplemented
 

@@ -27,7 +27,7 @@ class Grid:
     def setMissedPosition(self, position):
         self.missed.append(position)
         
-    def queryPosition(position):
+    def queryPosition(self, position):
         if position in self.hit:
             return 'hit'
         elif position in self.missed:
@@ -35,13 +35,13 @@ class Grid:
         else:
             return 'unknown'
             
-    def queryPositionHit(position):
+    def queryPositionHit(self, position):
         if position in self.hit:
             return True
         else:
             return False
 
-    def queryPositionMissed(position):
+    def queryPositionMissed(self, position):
         if position in self.missed:
             return True
         else:

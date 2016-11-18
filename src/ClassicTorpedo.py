@@ -1,4 +1,3 @@
-
 from Torpedo import Torpedo
 
 class ClassicTorpedo(Torpedo):
@@ -8,7 +7,7 @@ class ClassicTorpedo(Torpedo):
     def __init__(self):
         Torpedo.__init__(self, ClassicTorpedo.TORPEDO_TYPE_CLASSIC)
 
-    def getDamagePattern(self, position):
+    def getDamage(self, position):
         if (position == self.targetPosition):
             return 1
         else:

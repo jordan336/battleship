@@ -42,12 +42,27 @@ class State:
             self.scores.append(0)
             self.moveCounts.append(0)
 
+        # TODO
+        """
+        # Ships and torpedos should be a list of lists.  Each agent should have a list of
+        # torpedos and ships.  Fix this and then enable the below check.
+
+        # check the length of the input lists
+        if self.numAgents < 0 or \
+           len(self.gameBoards) != numAgents or \
+           len(self.ships) != numAgents or \
+           len(self.torpedos) != numAgents:
+            raise RuntimeError("Incorrect state inputs")
+        """
         
     def getBoards(self):
         return self.gameBoards
 
     def getShips(self):
         return self.ships
+
+    def getTorpedos(self):
+        return self.torpedos
 
     def currentAgent(self):
         return self.nextAgentToMove
@@ -119,6 +134,7 @@ class State:
 
     Return a list of legal target positions for the current state.
 
+    - agentIndex: The Agent's board to get (which holds the Agent's ships)
     """        
     def legalTargets(self, agentIndex=0):
         legalTargets = []
