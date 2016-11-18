@@ -5,8 +5,19 @@ Stanford University
 CS 221 Fall 2016
 
 Jordan Ebel (jebel)
-Kai Wen (kaiw)
+Kai Wan (kaiw)
 
 
-TODO
+TODO: Improve 
+
+
+Run Game
+--------
+python src/main.py
+
+
+Run Tests
+---------
+python test/TestRunner.py
+
 
