@@ -42,7 +42,7 @@ class QLearningAgent(Agent):
         torpedos = state.getTorpedos()[0]  # TODO Do not hardcode 0
         for torpedo in torpedos:
             for target in targets:
-                actions.append(TorpedoAction(torpedo, target, 0))
+                actions.append(TorpedoAction(torpedo[0], target, 0))
         return actions
 
     # This algorithm will produce an action given a state.

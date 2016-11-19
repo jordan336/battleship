@@ -40,12 +40,29 @@ class Ship:
     def getPosition(self):
         return self.boardPosition
 
+    """
+    getPositions
+
+    Get a list of Positions, one for each segment of this ship.
+    """
+    def getPositions(self):
+        positions = []
+        for i in range(self.length):
+            if self.orientation == self.ORIENTATION_0_DEG:
+                positions.append(Position(self.boardPosition.x+i, self.boardPosition.y)) 
+            elif self.orientation == self.ORIENTATION_90_DEG:
+                positions.append(Position(self.boardPosition.x, self.boardPosition.y+i)) 
+            elif self.orientation == self.ORIENTATION_180_DEG:
+                positions.append(Position(self.boardPosition.x-i, self.boardPosition.y)) 
+            else:
+                positions.append(Position(self.boardPosition.x, self.boardPosition.y-i)) 
+        return positions
+
     def getLength(self):
         return self.length
 
     def getOrientation(self):
         return self.orientation
-
 
     def isSunk(self):
         return self.sunk
@@ -116,15 +133,34 @@ class Ship:
         self.boardPosition = position
         self.orientation = orientation
 
-    def takeDamage(self, index):
+    """
+    takeDamage()
+
+    Update the ship's hit points after sustaining an attack
+    at the specified index with the specified damage amount.
+    """
+    def takeDamage(self, index, damageAmount):
         if index >= 0 and index < len(self.damageList):
-            self.damageList[index] -= 1
+            self.damageList[index] -= damageAmount
         if self.damageList[index] < 0:
             self.damageList[index] = 0
         if sum(self.damageList) <= 0:
             self.sunk = True
 
+    """
+    takeDamage_Position()
 
+    Update the ship's hit points after sustaining an attack
+    at the specified position with the specified damage amount.
+    """
+    def takeDamage_Position(self, position, damageAmount):
+        self.takeDamage(self.shipSegmentIndex(position), damageAmount)
+
+    """
+    getDamage()
+
+    Get the sum of the ship's hit points (damage list).
+    """
     def getDamage(self):
         return sum(self.damageList)
 

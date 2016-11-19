@@ -60,4 +60,68 @@ class ShipTestCase(unittest.TestCase):
         self.assertEqual(-1, ship.shipSegmentIndex(Position(0, 0)))
         self.assertEqual(-1, ship.shipSegmentIndex(Position(-2, -1)))
 
+    def test_getPositions(self):
+        ship = Ship("carrier", [1, 1], 1)
+        self.assertTrue(Position(0, 0) in ship.getPositions())
+        self.assertTrue(Position(1, 0) in ship.getPositions())
+        self.assertFalse(Position(-1, 0) in ship.getPositions())
+        self.assertFalse(Position(0, 1) in ship.getPositions())
+
+        ship.place(Position(0, 0), Ship.ORIENTATION_90_DEG)
+        self.assertTrue(Position(0, 0) in ship.getPositions())
+        self.assertTrue(Position(0, 1) in ship.getPositions())
+        self.assertFalse(Position(-1, 0) in ship.getPositions())
+        self.assertFalse(Position(1, 0) in ship.getPositions())
+
+        ship.place(Position(0, 0), Ship.ORIENTATION_180_DEG)
+        self.assertTrue(Position(0, 0) in ship.getPositions())
+        self.assertTrue(Position(-1, 0) in ship.getPositions())
+        self.assertFalse(Position(1, 0) in ship.getPositions())
+        self.assertFalse(Position(0, 1) in ship.getPositions())
+
+        ship.place(Position(0, 0), Ship.ORIENTATION_270_DEG)
+        self.assertTrue(Position(0, 0) in ship.getPositions())
+        self.assertTrue(Position(0, -1) in ship.getPositions())
+        self.assertFalse(Position(1, 0) in ship.getPositions())
+        self.assertFalse(Position(0, 1) in ship.getPositions())
+
+    def test_takeDamage(self):
+        ship = Ship("carrier", [1, 3, 2], 1)
+        ship.takeDamage(0, 1)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(3, ship.damageList[1])
+        self.assertEqual(2, ship.damageList[2])
+        ship.takeDamage(1, 1)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(2, ship.damageList[1])
+        self.assertEqual(2, ship.damageList[2])
+        ship.takeDamage(2, 2)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(2, ship.damageList[1])
+        self.assertEqual(0, ship.damageList[2])
+
+    def test_takeDamagePosition(self):
+        ship = Ship("carrier", [1, 3, 2], 1)
+        ship.takeDamage_Position(Position(0, 0), 1)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(3, ship.damageList[1])
+        self.assertEqual(2, ship.damageList[2])
+        ship.takeDamage_Position(Position(2, 0), 5)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(3, ship.damageList[1])
+        self.assertEqual(0, ship.damageList[2])
+        ship.takeDamage_Position(Position(10, 10), 1)
+        self.assertEqual(0, ship.damageList[0])
+        self.assertEqual(3, ship.damageList[1])
+        self.assertEqual(0, ship.damageList[2])
+
+    def test_getDamage(self):
+        ship = Ship("carrier", [1, 3, 2], 1)
+        self.assertEqual(6, ship.getDamage())
+        ship.takeDamage(0, 1)
+        self.assertEqual(5, ship.getDamage())
+        ship.takeDamage(0, 1)
+        self.assertEqual(5, ship.getDamage())
+        ship.takeDamage(1, 5)
+        self.assertEqual(2, ship.getDamage())
 
