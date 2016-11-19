@@ -1,6 +1,8 @@
 import unittest
 import sys
-sys.path.append('src/')
+import os
+testDirPath = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(testDirPath + '/../src/')
 
 from PositionTestCase import PositionTestCase
 from GridTestCase import GridTestCase
