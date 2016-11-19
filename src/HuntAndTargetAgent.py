@@ -7,13 +7,18 @@ class HuntAndTargetAgent(Agent):
 
     def __init__(self, name, rules):
         self.name = name
+
+        #TODO: remove
         self.rules = rules
    
     def placeShip(self, ship): 
         raise NotImplementedError()
 
     def getAction(self, state): 
+
+        #TODO: should get the torpedos from the state, not the rules.
         (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
+
         #self.drawCurrentState(state)
         board = state.getBoards()[0]
         candidateActions = []

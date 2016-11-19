@@ -7,6 +7,7 @@ class HumanAgent(Agent):
 
     def __init__(self, name, rules):
         self.name = name
+        #TODO: remove
         self.rules = rules
    
     def drawCurrentState(self, state):
@@ -18,7 +19,10 @@ class HumanAgent(Agent):
         raise NotImplementedError()
 
     def getAction(self, state): 
+
+        #TODO: torpedos should come from state, not rules
         (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
+
         self.drawCurrentState(state)
         while True:
             print 'Hello human', self.name, '! Please provide x and y coordinates of your target.'
