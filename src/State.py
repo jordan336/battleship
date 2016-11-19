@@ -91,12 +91,13 @@ class State:
     all agents have at least one non-sunk ship and return false.
     """
     def isEnd(self):
-        agentSunk = True
-        for ship in self.ships:
-            if not ship.isSunk():
-                agentSunk = False
-        if agentSunk:
-            return True
+        for shipList in self.ships:
+            agentSunk = True
+            for ship in shipList:
+                if not ship.isSunk():
+                    agentSunk = False
+            if agentSunk:
+                return True
         return False
     
 
@@ -127,7 +128,7 @@ class State:
     """
     def calcScore(self, agentIndex):
         score = 0
-        for ship in self.ships:
+        for ship in self.ships[agentIndex]:
             score += ship.getScore()
         score -= self.moveCounts[agentIndex]
         self.scores[agentIndex] = score
@@ -169,16 +170,19 @@ class State:
     Given an Action, generate a new State representing the game after the
     Action is executed.
     """
-    def generateSuccessor(self, action, agentIndex=0, verbose=False):
+    def generateSuccessor(self, action, attackingAgentIndex=0, verbose=False):
         if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
-            if verbose: print "Action: Firing torpedo at: ", action.getTarget()
+
+            #TODO: check if the agent has enough torpedos
+
+            if verbose: print "Action: Firing torpedo at: ", action.getTarget(), " target agent: ", action.getTargetAgentIndex()
             hit = False
-            for ship in self.ships:
+            for ship in self.ships[action.getTargetAgentIndex()]:
                 shipHitIndex = ship.shipSegmentIndex(action.getTarget())
                 if shipHitIndex >= 0:
                     hit = True
                     if verbose: print ship.getName() + " has been hit!!"
-                    self.gameBoards[agentIndex].setHitPosition(action.getTarget())
+                    self.gameBoards[action.getTargetAgentIndex()].setHitPosition(action.getTarget())
                     ship.takeDamage(shipHitIndex)
                     if verbose: 
                         if ship.getDamage() == 0:
@@ -188,11 +192,17 @@ class State:
                     break
             if not hit:
                 if verbose: print "Missed!!"
-                self.gameBoards[agentIndex].setMissedPosition(action.getTarget())
+                self.gameBoards[action.getTargetAgentIndex()].setMissedPosition(action.getTarget())
+
             #UpdateScores
-            self.moveCounts[agentIndex] += 1
-            self.calcScore(agentIndex)
-            # TODO
+            self.moveCounts[attackingAgentIndex] += 1
+            self.calcScore(attackingAgentIndex)
+
+            #TODO: decrement attacking agent's torpedo count
+
         else:
             print "Other action"
+
+        # Next agent's turn
+        self.nextAgentToMove = (self.nextAgentToMove + 1) % self.numAgents
 

@@ -20,17 +20,23 @@ class Action:
     # TODO
     #ACTION_TYPE_MOVE_SHIP = "moveShip" 
 
-
-    def __init__(self, type, target):
+    def __init__(self, type):
         self.actionType = type
-        self.actionTarget = target
 
     def getType(self):
         return self.actionType
         
-    def getTarget(self):
-        return self.actionTarget
+    #######################################
+    # TorpedoAction methods
 
     def getTorpedo(self):
         raise NotImplementedError()
+
+    def getTarget(self):
+        raise NotImplementedError()
+
+    def getTargetAgentIndex(self):
+        raise NotImplementedError()
+
+    #######################################
 

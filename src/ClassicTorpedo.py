@@ -7,8 +7,8 @@ class ClassicTorpedo(Torpedo):
     def __init__(self):
         Torpedo.__init__(self, ClassicTorpedo.TORPEDO_TYPE_CLASSIC)
 
-    def getDamage(self, position):
-        if (position == self.targetPosition):
+    def getDamage(self, target, position):
+        if (position == target):
             return 1
         else:
             return 0

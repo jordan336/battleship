@@ -17,7 +17,7 @@ class HuntAndTargetAgent(Agent):
     def getAction(self, state): 
 
         #TODO: should get the torpedos from the state, not the rules.
-        (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
+        (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
 
         #self.drawCurrentState(state)
         board = state.getBoards()[0]
@@ -31,7 +31,8 @@ class HuntAndTargetAgent(Agent):
         if not candidateActions:
             candidateActions = legalMoves
         
-        action = TorpedoAction(torpedo, random.choice(candidateActions))
+        #TODO: Should not be hardcoding board 0 as the target
+        action = TorpedoAction(torpedo, random.choice(candidateActions), 0)
         return action
 
     def incorporateFeedback(self, state, action, reward, newState):

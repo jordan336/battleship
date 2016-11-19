@@ -73,11 +73,18 @@ class Game:
         
 
     def startState(self):
-        boards = self.rules.getBoards()
-        ships = self.rules.getShips()
-        (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
-        self.placeShips(boards[0], ships)
-        newState = State(boards, ships, torpedo, 1)
+        boards = []
+        ships = []
+        torpedos = []
+        for agent in self.agents:
+            board = self.rules.getBoard(agent)
+            shipList = self.rules.getShips(agent)
+            torpedoList = self.rules.getTorpedos(agent)
+            boards.append(board)
+            ships.append(shipList)
+            torpedos.append(torpedoList)
+            self.placeShips(board, shipList)
+        newState = State(boards, ships, torpedos, 1)
         return newState
         
     def run(self):
@@ -89,8 +96,18 @@ class Game:
                 verbose = True
             else: 
                 verbose = False
+
             action = self.agents[currentAgent].getAction(self.currentState)
+            oldState = self.currentState.deepCopy()
             self.currentState.generateSuccessor(action, currentAgent, verbose)
+            newState = self.currentState.deepCopy()
+
+            #TODO: a different reward calculate?
+            reward = newState.getScore(currentAgent) - oldState.getScore(currentAgent)
+
+            # Inform learning agents of s, a, r, s
+            self.agents[currentAgent].incorporateFeedback(oldState, action, reward, newState)
+
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
         finalNumMoves = self.currentState.getMoveCount(currentAgent)

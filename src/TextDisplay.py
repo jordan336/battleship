@@ -26,13 +26,14 @@ class TextDisplay:
                     rowOutput += ' x '
                 elif showShips and ships is not None:
                     hasShip = False
-                    for ship in ships:
-                        if ship.hasShip(pos):
-                            hasShip = True
-                    if hasShip:
-                        rowOutput += ' . '
-                    else:
-                        rowOutput += '   '    
+                    for shipList in ships:
+                        for ship in shipList:
+                            if ship.hasShip(pos):
+                                hasShip = True
+                        if hasShip:
+                            rowOutput += ' . '
+                        else:
+                            rowOutput += '   '    
                 else:
                     rowOutput += '   ' 
                 rowOutput += '|'

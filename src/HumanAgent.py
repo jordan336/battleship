@@ -21,7 +21,7 @@ class HumanAgent(Agent):
     def getAction(self, state): 
 
         #TODO: torpedos should come from state, not rules
-        (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
+        (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
 
         self.drawCurrentState(state)
         while True:
@@ -33,7 +33,9 @@ class HumanAgent(Agent):
                 break
             else:
                 print 'Invalid target; please try again.'
-        action = TorpedoAction(torpedo, inputPos)
+
+        #TODO Should not be hardcoding 0
+        action = TorpedoAction(torpedo, inputPos, 0)
         return action
 
     def incorporateFeedback(self, state, action, reward, newState):

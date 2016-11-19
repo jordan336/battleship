@@ -1,18 +1,37 @@
+from Agent import Agent
 
 class Rules:
 
-    def getShips(self):
-        raise NotImplemented
-
     """
-        getTorpedos
+    getBoard
 
-        Returns list of tuples with torpedo info, with each tuple specifying the torpedo type and number.
-        For example: [ClassicTorpedo, 10]
+    Return a game board (Grid) for the given Agent.
     """
-    def getTorpedos(self):
+    @staticmethod
+    def getBoard(agent):
         raise NotImplementedError()
 
-    def getScore(self):
+    """
+    getShips
+
+    Returns a list of ships for the given Agent.
+    """
+    @staticmethod
+    def getShips(agent):
+        raise NotImplementedError()
+
+    """
+    getTorpedos
+
+    Returns list of tuples with torpedo info, with each tuple specifying the torpedo type and number.
+    For example: [ClassicTorpedo, 10]
+    """
+    @staticmethod
+    def getTorpedos(agent):
+        raise NotImplementedError()
+
+    #TODO: Is getScore() necessary?
+    @staticmethod
+    def getScore(agent):
         raise NotImplementedError()
 
