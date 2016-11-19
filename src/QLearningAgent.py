@@ -58,7 +58,7 @@ class QLearningAgent(Agent):
     def incorporateFeedback(self, state, action, reward, newState):
         v_opt = 0
 
-        if newState is not None:
+        if not newState.isEnd():
             v_opt = max(self.getQ(newState, action) for action in self.actions(newState))
 
         target = reward + self.discount * v_opt
