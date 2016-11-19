@@ -1,4 +1,4 @@
-
+import copy
 from Action import Action
 from Position import Position
 
@@ -54,6 +54,23 @@ class State:
            len(self.torpedos) != numAgents:
             raise RuntimeError("Incorrect state inputs")
         """
+
+    def deepCopy(self):
+        state = State([], [], [], 0)
+        for board in self.gameBoards:
+            state.gameBoards.append(copy.deepcopy(board))
+        for torpedoList in self.torpedos:
+            state.torpedos.append(copy.deepcopy(torpedoList))
+        for shipList in self.ships:
+            state.ships.append(copy.deepcopy(shipList))
+        for score in self.scores:
+            state.scores.append(score)
+        for moveCount in self.moveCounts:
+            state.moveCounts.append(moveCount)
+        state.numAgents = self.numAgents
+        state.nextAgentToMove = self.nextAgentToMove
+        return state
+        
     def getBoards(self):
         return self.gameBoards
 
