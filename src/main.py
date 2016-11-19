@@ -5,6 +5,7 @@ from MiniGameRules import MiniGameRules
 from HumanAgent import HumanAgent
 from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
+from QLearningAgent import QLearningAgent
 
 if __name__ == '__main__':
 
@@ -19,7 +20,8 @@ if __name__ == '__main__':
     # Choose the agent to use for the game.
     #agents = [HumanAgent("Kai", rules)]
     #agents = [RandomAgent("Random", rules)]
-    agents = [HuntAndTargetAgent("HuntAndTarget", rules)]
+    #agents = [HuntAndTargetAgent("HuntAndTarget", rules)]
+    agents = [QLearningAgent("QLearningAgent")]
     battleshipGame = Game(rules, agents)
     for i in range(numGamesToPlay):
         numMoves, score = battleshipGame.run()
