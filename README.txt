@@ -20,6 +20,9 @@ TODO List
 * State should update torpedo lists when an Agent fires a torpedo
 * Running the tests doesn't work unless ran from battleship/ directory
 * Agent statistics
+* Need a way for Agents to extract information about other Agents from State.  Right now they need to use
+    agent index and there is no mapping of agent index -> Agent.  As a result, agent index is hardcoded to
+    0 in a lot of places.
 
 
 Run Game
