@@ -1,6 +1,7 @@
 
 from Ship import Ship
 from State import State
+from Action import Action
 
 class Agent:
 
@@ -8,8 +9,11 @@ class Agent:
         self.name = name
 
     def placeShip(self, Ship): 
-        raise NotImplemented
+        raise NotImplementedError()
 
     def getAction(self, State): 
-        raise NotImplemented
+        raise NotImplementedError()
+
+    def incorporateFeedback(self, state, action, reward, newState):
+        raise NotImplementedError()
 

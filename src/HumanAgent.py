@@ -15,7 +15,7 @@ class HumanAgent(Agent):
         TextDisplay.draw(board, ships, True) 
    
     def placeShip(self, ship): 
-        raise NotImplemented
+        raise NotImplementedError()
 
     def getAction(self, state): 
         (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
@@ -31,4 +31,7 @@ class HumanAgent(Agent):
                 print 'Invalid target; please try again.'
         action = TorpedoAction(torpedo, inputPos)
         return action
+
+    def incorporateFeedback(self, state, action, reward, newState):
+        pass
 

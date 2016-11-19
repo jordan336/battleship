@@ -54,7 +54,6 @@ class State:
            len(self.torpedos) != numAgents:
             raise RuntimeError("Incorrect state inputs")
         """
-        
     def getBoards(self):
         return self.gameBoards
 

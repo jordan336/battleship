@@ -19,5 +19,5 @@ class Torpedo:
             raise TypeError("Position type expected")
 
     def getDamage(self, position):
-        raise NotImplemented
+        raise NotImplementedError()
 

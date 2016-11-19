@@ -32,5 +32,5 @@ class Action:
         return self.actionTarget
 
     def getTorpedo(self):
-        raise NotImplemented 
+        raise NotImplementedError()
 

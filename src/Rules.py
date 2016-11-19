@@ -11,8 +11,8 @@ class Rules:
         For example: [ClassicTorpedo, 10]
     """
     def getTorpedos(self):
-        raise NotImplemented
+        raise NotImplementedError()
 
     def getScore(self):
-        raise NotImplemented
+        raise NotImplementedError()
 

@@ -10,7 +10,7 @@ class RandomAgent(Agent):
         self.rules = rules
    
     def placeShip(self, ship): 
-        raise NotImplemented
+        raise NotImplementedError()
 
     def getAction(self, state): 
         (torpedo, torpedoCount) = (self.rules.getTorpedos())[0]
@@ -18,4 +18,6 @@ class RandomAgent(Agent):
         action = TorpedoAction(torpedo, random.choice(candidateActions))
         return action
 
+    def incorporateFeedback(self, state, action, reward, newState):
+        pass
 
