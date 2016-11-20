@@ -38,11 +38,13 @@ class QLearningAgent(Agent):
 
     def actions(self, state):
         actions = []
-        targets = state.legalTargets()
-        torpedos = state.getTorpedos()[0]  # TODO Do not hardcode 0
-        for torpedo in torpedos:
+        #TODO: Setting 0 only works for 1 opponent
+        opponentToAttack = state.getOpponents(self.name)[0]
+        targets = state.legalTargets(opponentToAttack)
+        torpedos = state.getTorpedos(self.name)
+        for torpedo, count in torpedos:
             for target in targets:
-                actions.append(TorpedoAction(torpedo[0], target, 0))
+                actions.append(TorpedoAction(torpedo, target, opponentToAttack))
         return actions
 
     # This algorithm will produce an action given a state.

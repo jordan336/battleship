@@ -20,9 +20,13 @@ class HuntAndTargetAgent(Agent):
         (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
 
         #self.drawCurrentState(state)
-        board = state.getBoards()[0]
+    
+        #TODO: setting 0 only works for 1 opponent
+        opponentToAttack = state.getOpponents(self.name)[0]
+
+        board = state.getBoard(opponentToAttack)
         candidateActions = []
-        legalMoves = state.legalTargets()
+        legalMoves = state.legalTargets(opponentToAttack)
         for hitPos in board.getHitPositions():
             for adjacentTile in board.getValidNeighbors(hitPos):
                 if adjacentTile not in board.getMissedPositions() and adjacentTile in legalMoves:
@@ -31,11 +35,9 @@ class HuntAndTargetAgent(Agent):
         if not candidateActions:
             candidateActions = legalMoves
         
-        #TODO: Should not be hardcoding board 0 as the target
-        action = TorpedoAction(torpedo, random.choice(candidateActions), 0)
+        action = TorpedoAction(torpedo, random.choice(candidateActions), opponentToAttack)
         return action
 
     def incorporateFeedback(self, state, action, reward, newState):
         pass
-
 

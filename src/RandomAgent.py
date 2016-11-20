@@ -16,9 +16,10 @@ class RandomAgent(Agent):
     def getAction(self, state): 
         #TODO: torpedos should come from state, not rules
         (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
-        candidateActions = state.legalTargets()
-        #TODO should not be hardcoding 0
-        action = TorpedoAction(torpedo, random.choice(candidateActions), 0)
+        opponents = state.getOpponents(self.name)
+        opponentToAttack = random.choice(opponents)
+        candidateActions = state.legalTargets(opponentToAttack)
+        action = TorpedoAction(torpedo, random.choice(candidateActions), opponentToAttack)
         return action
 
     def incorporateFeedback(self, state, action, reward, newState):

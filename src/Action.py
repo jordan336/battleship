@@ -35,7 +35,7 @@ class Action:
     def getTarget(self):
         raise NotImplementedError()
 
-    def getTargetAgentIndex(self):
+    def getTargetAgentName(self):
         raise NotImplementedError()
 
     #######################################

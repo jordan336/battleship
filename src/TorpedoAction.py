@@ -9,11 +9,11 @@ ACITON_TYPE_FIRE_TORPEDO.
 """
 class TorpedoAction(Action):
 
-    def __init__(self, torpedo, target, targetAgentIndex):
+    def __init__(self, torpedo, target, targetAgentName):
         Action.__init__(self, Action.ACTION_TYPE_FIRE_TORPEDO)
         self.torpedo = torpedo
         self.target = target
-        self.targetAgentIndex = targetAgentIndex
+        self.targetAgentName = targetAgentName
 
     def getTorpedo(self):
         return self.torpedo
@@ -21,6 +21,6 @@ class TorpedoAction(Action):
     def getTarget(self):
         return self.target
 
-    def getTargetAgentIndex(self):
-        return self.targetAgentIndex
+    def getTargetAgentName(self):
+        return self.targetAgentName
 

@@ -10,24 +10,28 @@ from HumanAgent import HumanAgent
 """
 class Game:
 
-
     def __init__(self, rules, agents=[]):
         self.rules = rules
         self.agents = agents
         
     def drawCurrentState(self):
-        board = self.currentState.getBoards()[0]
-        ships = self.currentState.getShips()
-        TextDisplay.draw(board, ships, True) 
- 
+        for agent in self.currentState.getAgents():
+            board = self.currentState.getBoard(agent)
+            ships = self.currentState.getShips(agent)
+            TextDisplay.draw(board, ships, True) 
+
+    def getAgentIndex(self, agentName):
+        for index, agent in enumerate(self.agents):
+            if agent.getName() == agentName:
+                return index
+        raise RuntimeError("Agent " + agentName + " not in agents list")
  
     """
-        placeShips()
+    placeShips()
 
-        Given a game board and list of ships, place the ships on the game board randomly and assign each ship with corresponding positions and orientations. 
+    Given a game board and list of ships, place the ships on the game board randomly and assign each ship with corresponding positions and orientations. 
 
-        TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
-
+    TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
     """
     def placeShips(self, board, ships):
         placedShips = []
@@ -71,48 +75,55 @@ class Game:
                 y -= 1
         return True
         
-
     def startState(self):
-        boards = []
-        ships = []
-        torpedos = []
+        agentNames = []
+        boards = {}
+        ships = {}
+        torpedos = {}
         for agent in self.agents:
+            agentNames.append(agent.getName())
             board = self.rules.getBoard(agent)
             shipList = self.rules.getShips(agent)
             torpedoList = self.rules.getTorpedos(agent)
-            boards.append(board)
-            ships.append(shipList)
-            torpedos.append(torpedoList)
+            boards[agent.getName()] = board
+            ships[agent.getName()] = shipList
+            torpedos[agent.getName()] = torpedoList
             self.placeShips(board, shipList)
-        newState = State(boards, ships, torpedos, 1)
+        newState = State(agentNames, boards, ships, torpedos)
         return newState
         
     def run(self):
         self.currentState = self.startState()
         while not self.currentState.isEnd():
+            currentAgentName = self.currentState.currentAgent()
+            currentAgentIndex = self.getAgentIndex(currentAgentName)
+
             #self.drawCurrentState()
-            currentAgent = self.currentState.currentAgent()
-            if type(self.agents[currentAgent]) is HumanAgent:
+
+            if type(self.agents[currentAgentIndex]) is HumanAgent:
                 verbose = True
             else: 
                 verbose = False
 
-            action = self.agents[currentAgent].getAction(self.currentState)
+            action = self.agents[currentAgentIndex].getAction(self.currentState)
             oldState = self.currentState.deepCopy()
-            self.currentState.generateSuccessor(action, currentAgent, verbose)
+            self.currentState.generateSuccessor(action, currentAgentName, verbose)
             newState = self.currentState.deepCopy()
-
-            #TODO: a different reward calculate?
-            reward = newState.getScore(currentAgent) - oldState.getScore(currentAgent)
+            #TODO: a different reward calculation?
+            reward = newState.getScore(currentAgentName) - oldState.getScore(currentAgentName)
 
             # Inform learning agents of s, a, r, s
-            self.agents[currentAgent].incorporateFeedback(oldState, action, reward, newState)
+            self.agents[currentAgentIndex].incorporateFeedback(oldState, action, reward, newState)
+
 
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
-        finalNumMoves = self.currentState.getMoveCount(currentAgent)
-        finalScore = self.currentState.getScore(currentAgent)
+        #TODO doesnt work with more than 1 agent
+        agent = self.currentState.getAgents()[0]
+        finalNumMoves = self.currentState.getMoveCount(agent)
+        finalScore = self.currentState.getScore(agent)
         print 'Moves:', finalNumMoves, 'Score:', finalScore
-        return finalNumMoves, finalScore
+
+        return finalNumMoves, finalScore  #TODO: return array of final scores
 
  

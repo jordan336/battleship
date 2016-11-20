@@ -17,71 +17,95 @@ class State:
     """
     init()
 
-    Create a new state.
+    Create a new state.  There must be at least 2 Agents playing.  There can 
+    be 0 Agents in the special case that a blank State is being create in
+    deepCopy().
 
-    - gameBoards: List of Grids, one for each Agent.  The Grid for an agent
-                  is the Grid with that Agent's ships.
-                  TODO: This scheme wont work with more than 2 players.
+    - agents     : The names of the Agents playing the game
 
-    - ships     : List of list of Ships, one list for each Agent.
+    - gameBoards : Dictionary of Grids, one for each Agent.  The Grid for an agent
+                   is the Grid with that Agent's ships.
 
-    - torpedos  : List of list of Torpedos, one list for each Agent.  The list
-                  of torpedos is the list of torpedos the Agent has yet to fire.
+    - ships      : Dictionary of list of Ships, one list for each Agent.
 
-    - numAgents : The total number of agents 
+    - torpedos   : Dictionary of list of (Torpedo, count) tuples, one list for each Agent.  The list
+                   of torpedos is the list of torpedos the Agent has yet to fire.
     """
-    def __init__(self, gameBoards, ships, torpedos, numAgents):
+    def __init__(self, agents, gameBoards, ships, torpedos):
+        if len(agents) < 2 and len(agents) != 0:
+            raise RuntimeError("At least 2 Agents must play")
+
+        self.agents = agents
         self.gameBoards = gameBoards
         self.ships = ships
         self.torpedos = torpedos
-        self.numAgents = numAgents
-        self.nextAgentToMove= 0
-        self.scores = []
-        self.moveCounts = []
-        for i in range(numAgents):
-            self.scores.append(0)
-            self.moveCounts.append(0)
 
-        # TODO
-        """
-        # Ships and torpedos should be a list of lists.  Each agent should have a list of
-        # torpedos and ships.  Fix this and then enable the below check.
+        self.scores = {}
+        self.moveCounts = {}
+        for agent in agents:
+            self.scores[agent] = 0
+            self.moveCounts[agent] = 0
 
-        # check the length of the input lists
-        if self.numAgents < 0 or \
-           len(self.gameBoards) != numAgents or \
-           len(self.ships) != numAgents or \
-           len(self.torpedos) != numAgents:
+        if len(agents) == 0:
+            self.nextAgentToMove = None
+        else:
+            self.nextAgentToMove = agents[0]
+
+        # check the length of the inputs
+        if len(self.gameBoards) != len(agents) or \
+           len(self.ships) != len(agents) or \
+           len(self.torpedos) != len(agents):
             raise RuntimeError("Incorrect state inputs")
-        """
 
     def deepCopy(self):
-        state = State([], [], [], 0)
-        for board in self.gameBoards:
-            state.gameBoards.append(copy.deepcopy(board))
-        for torpedoList in self.torpedos:
-            state.torpedos.append(copy.deepcopy(torpedoList))
-        for shipList in self.ships:
-            state.ships.append(copy.deepcopy(shipList))
-        for score in self.scores:
-            state.scores.append(score)
-        for moveCount in self.moveCounts:
-            state.moveCounts.append(moveCount)
-        state.numAgents = self.numAgents
+        state = State([], {}, {}, {})
+        for agent in self.agents:
+            state.agents.append(copy.deepcopy(agent))
+        for agent, board in self.gameBoards.iteritems():
+            state.gameBoards[agent] = copy.deepcopy(board)
+        for agent, shipList in self.ships.iteritems():
+            state.ships[agent] = copy.deepcopy(shipList)
+        for agent, torpedoList in self.torpedos.iteritems():
+            state.torpedos[agent] = copy.deepcopy(torpedoList)
+        for agent, score in self.scores.iteritems():
+            state.scores[agent] = score
+        for agent, moveCount in self.moveCounts.iteritems():
+            state.moveCounts[agent] = score
         state.nextAgentToMove = self.nextAgentToMove
         return state
         
-    def getBoards(self):
-        return self.gameBoards
+    def getAgents(self):
+        return self.agents
 
-    def getShips(self):
-        return self.ships
+    def getBoard(self, agentName = None):
+        if agentName is not None:
+            return self.gameBoards[agentName]
+        else:
+            return self.gameBoards
 
-    def getTorpedos(self):
-        return self.torpedos
+    def getShips(self, agentName = None):
+        if agentName is not None:
+            return self.ships[agentName]
+        else:
+            return self.ships
+
+    def getTorpedos(self, agentName = None):
+        if agentName is not None:
+            return self.torpedos[agentName]
+        else:
+            return self.torpedos
 
     def currentAgent(self):
         return self.nextAgentToMove
+
+    def setNextAgentToMove(self):
+        agentNames = [agent for agent in self.agents]
+        curIndex = agentNames.index(self.nextAgentToMove)
+        nextIndex = (curIndex + 1) % len(self.agents)
+        self.nextAgentToMove = self.agents[nextIndex]
+
+    def getOpponents(self, agentName):
+        return [agent for agent in self.agents if agent != agentName]
         
     """
     isEnd()
@@ -91,7 +115,7 @@ class State:
     all agents have at least one non-sunk ship and return false.
     """
     def isEnd(self):
-        for shipList in self.ships:
+        for __, shipList in self.ships.iteritems():
             agentSunk = True
             for ship in shipList:
                 if not ship.isSunk():
@@ -110,10 +134,10 @@ class State:
     TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
           base the score on the Agent's statisitics, see above comment.
 
-    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    - agentName: The Agent's score to get 
     """
-    def getScore(self, agentIndex):
-        return self.scores[agentIndex] 
+    def getScore(self, agentName):
+        return self.scores[agentName] 
  
     """
     calcScore()
@@ -124,72 +148,78 @@ class State:
     TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
           base the score on the Agent's statisitics, see above comment.
 
-    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    - agentName: The Agent's score to get
     """
-    def calcScore(self, agentIndex):
+    def calcScore(self, agentName):
         score = 0
-        for ship in self.ships[agentIndex]:
-            score += ship.getScore()
-        score -= self.moveCounts[agentIndex]
-        self.scores[agentIndex] = score
+        for opponent in self.getOpponents(agentName):
+            for ship in self.ships[opponent]:
+                score += ship.getScore()
+        score -= self.moveCounts[agentName]
+        self.scores[agentName] = score
 
     """
     getMoveCount()
 
     Return a number representing the number moves taken.
 
-    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
-          base the score on the Agent's statisitics, see above comment.
-
-    - agentIndex: The Agent's score to get (between 0 and self.numAgents-1)
+    - agentName: The Agent's score to get
     """
-    def getMoveCount(self, agentIndex):
-        return self.moveCounts[agentIndex] 
+    def getMoveCount(self, agentName):
+        return self.moveCounts[agentName] 
 
     """
-    actions()
+    legalTargets()
 
-    Return a list of legal target positions for the current state.
+    Return a list of legal target positions for attacking the given Agent
+    in the current state.
 
-    - agentIndex: The Agent's board to get (which holds the Agent's ships)
+    - agentName: The Agent's board to get (which holds the Agent's ships)
     """        
-    def legalTargets(self, agentIndex=0):
+    def legalTargets(self, agentName):
         legalTargets = []
-        missedPos = self.gameBoards[agentIndex].getMissedPositions()
-        hitPos = self.gameBoards[agentIndex].getHitPositions()
-        for i in range(self.gameBoards[agentIndex].width):
-            for k in range(self.gameBoards[agentIndex].height):
+        missedPos = self.gameBoards[agentName].getMissedPositions()
+        hitPos = self.gameBoards[agentName].getHitPositions()
+        for i in range(self.gameBoards[agentName].width):
+            for k in range(self.gameBoards[agentName].height):
                 if Position(i, k) not in missedPos and Position(i, k) not in hitPos :
                     legalTargets.append(Position(i, k))
         return legalTargets
-                
 
     """
     generateSuccessor()
     
     Given an Action, generate a new State representing the game after the
     Action is executed.
-    """
-    def generateSuccessor(self, action, attackingAgentIndex=0, verbose=False):
 
-        if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
-            targetAgentIndex = action.getTargetAgentIndex()
+    - action          : Action to take
+
+    - actingAgentName : The Agent taking the Action
+
+    - verbose         : Verbosity for print statements
+    """
+    def generateSuccessor(self, action, actingAgentName, verbose=False):
+        if action is None:
+            if verbose: print "Agent did not act"
+
+        elif action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
+            targetAgentName = action.getTargetAgentName()
             targetPosition = action.getTarget()
             torpedo = action.getTorpedo()
 
             #TODO: check if the agent has enough torpedos
 
-            if verbose: print "Action: Firing torpedo at: ", targetPosition, " target agent: ", targetAgentIndex
+            if verbose: print "Action: Firing torpedo at: ", targetPosition, " target agent: ", targetAgentName
 
             hit = False
-            for ship in self.ships[targetAgentIndex]:
+            for ship in self.ships[targetAgentName]:
                 for shipPosition in ship.getPositions():
                     damage = torpedo.getDamage(targetPosition, shipPosition)
                     if damage > 0:
                         hit = True
                         if verbose: print ship.getName() + " has been hit!!"
                         #TODO: setHitPosition should take the damage
-                        self.gameBoards[targetAgentIndex].setHitPosition(shipPosition)
+                        self.gameBoards[targetAgentName].setHitPosition(shipPosition)
                         ship.takeDamage_Position(shipPosition, damage)
                         if verbose: 
                             if ship.getDamage() == 0:
@@ -199,11 +229,11 @@ class State:
 
             if not hit:
                 if verbose: print "Missed!!"
-                self.gameBoards[targetAgentIndex].setMissedPosition(targetPosition)
+                self.gameBoards[targetAgentName].setMissedPosition(targetPosition)
 
             #UpdateScores
-            self.moveCounts[attackingAgentIndex] += 1
-            self.calcScore(attackingAgentIndex)
+            self.moveCounts[actingAgentName] += 1
+            self.calcScore(actingAgentName)
 
             #TODO: decrement attacking agent's torpedo count
 
@@ -211,5 +241,5 @@ class State:
             print "Other action"
 
         # Next agent's turn
-        self.nextAgentToMove = (self.nextAgentToMove + 1) % self.numAgents
+        self.setNextAgentToMove()
 

@@ -6,6 +6,7 @@ from HumanAgent import HumanAgent
 from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
 from QLearningAgent import QLearningAgent
+from NoOpAgent import NoOpAgent
 
 if __name__ == '__main__':
 
@@ -49,6 +50,13 @@ if __name__ == '__main__':
                 agents.append(QLearningAgent(args.names[index]))
             else:
                 agents.append(QLearningAgent('QLearningAgent'))
+
+    # Game must be played with at least 2 Agents.  Add an Agent
+    # that does nothing if only 1 Agent is given.
+    count = 0
+    while len(agents) < 2:
+        agents.append(NoOpAgent('NoOp'+str(count)))
+        count += 1
 
     avgNumMoves = 0
     avgScore = 0

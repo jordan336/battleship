@@ -17,11 +17,14 @@ TODO List
 * Agents should use State to get their list of torpedos, not Rules
 * State should update torpedo lists when an Agent fires a torpedo
 * Agent statistics
-* Need a way for Agents to extract information about other Agents from State.  Right now they need to use
-    agent index and there is no mapping of agent index -> Agent.  As a result, agent index is hardcoded to
-    0 in a lot of places.
 * Grid needs to handle case where there is a hit at a position, but the ship still has hit points at that position.
   An Agent should still be allowed to fire at a hit position in this case, or maybe its always allowed?
+* Type check user input in HumanAgent
+* Scoring systems needs overhaul
+    - Remove score from Rules
+* Implement a logging system?
+* Support more than 2 agents (if desired):
+    - In a few places, the Agents expect only having 1 opponent
 
 
 Run Game
