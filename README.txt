@@ -18,7 +18,6 @@ TODO List
 * Agent statistics
 * Grid needs to handle case where there is a hit at a position, but the ship still has hit points at that position.
   An Agent should still be allowed to fire at a hit position in this case, or maybe its always allowed?
-* Type check user input in HumanAgent
 * Scoring systems needs overhaul
 * Implement a logging system?
 * Support more than 2 agents (if desired):
