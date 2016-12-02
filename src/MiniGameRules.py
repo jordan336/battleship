@@ -25,5 +25,5 @@ class MiniGameRules(Rules):
     @staticmethod
     def getTorpedos(agent):
         # Use 999 torpedos for now -- basically unlimited number of torpedos
-        return [(ClassicTorpedo(), 999)]
+        return { ClassicTorpedo(): 999 }
 

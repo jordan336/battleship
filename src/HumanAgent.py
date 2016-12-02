@@ -39,11 +39,12 @@ class HumanAgent(Agent):
 
                 # get torpedo to fire
                 while True:
-                    allowedIndices = []
-                    for index, (torpedo, count) in enumerate(state.getTorpedos(self.name)):
+                    availableTorpedos = {}
+
+                    for index, (torpedo, count) in enumerate(state.getTorpedos(self.name).iteritems()):
                         if count > 0:
                             print index, ': ', torpedo.getTorpedoType(), '[', count, ']'
-                            allowedIndices.append(index)
+                            availableTorpedos[index] = torpedo
 
                     torpedoIndex = raw_input('Enter the torpedo index: ')
                     if not torpedoIndex.isdigit():
@@ -51,8 +52,8 @@ class HumanAgent(Agent):
                         continue
                     torpedoIndex = int(torpedoIndex)
 
-                    if torpedoIndex in allowedIndices:
-                        action = TorpedoAction(state.getTorpedos(self.name)[torpedoIndex][0], inputPos, opponentToAttack)
+                    if torpedoIndex in availableTorpedos.keys():
+                        action = TorpedoAction(availableTorpedos[torpedoIndex], inputPos, opponentToAttack)
                         return action
 
                     else:

@@ -112,9 +112,12 @@ class State:
 
     For every agent's list of ships, check if any ship is not sunk.
     If the every ship for an agent is sunk, return true.  Otherwise,
-    all agents have at least one non-sunk ship and return false.
+    all agents have at least one non-sunk ship.  Also, check if every
+    agent has at least 1 torpedo left to fire, otherwise return true.
     """
     def isEnd(self):
+
+        # Check if all ships sunk
         for __, shipList in self.ships.iteritems():
             agentSunk = True
             for ship in shipList:
@@ -122,9 +125,17 @@ class State:
                     agentSunk = False
             if agentSunk:
                 return True
+
+        # Check if out of torpedos
+        for __, torpedoList in self.torpedos.iteritems():
+            sumTorpedos = 0
+            for (torpedo, count) in torpedoList.iteritems():
+                sumTorpedos += count
+            if sumTorpedos <= 0:
+                return True
+
         return False
     
-
     """
     getScore()
 
@@ -207,7 +218,10 @@ class State:
             targetPosition = action.getTarget()
             torpedo = action.getTorpedo()
 
-            #TODO: check if the agent has enough torpedos
+            # Make sure the agent has enough torpedos
+            if self.torpedos[actingAgentName][torpedo] <= 0:
+                print "Agent ", actingAgentName, " tried to fire a nonexistent torpedo"
+                return
 
             if verbose: print "Action: Firing torpedo at: ", targetPosition, " target agent: ", targetAgentName
 
@@ -231,11 +245,12 @@ class State:
                 if verbose: print "Missed!!"
                 self.gameBoards[targetAgentName].setMissedPosition(targetPosition)
 
-            #UpdateScores
+            # Update scores
             self.moveCounts[actingAgentName] += 1
             self.calcScore(actingAgentName)
 
-            #TODO: decrement attacking agent's torpedo count
+            # Decrement remaining torpedos
+            self.torpedos[actingAgentName][torpedo] -= 1
 
         else:
             print "Other action"

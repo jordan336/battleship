@@ -12,11 +12,11 @@ class RandomAgent(Agent):
         raise NotImplementedError()
 
     def getAction(self, state): 
-        (torpedo, torpedoCount) = random.choice(state.getTorpedos(self.name))
+        randomTorpedo = random.choice(state.getTorpedos(self.name).keys())
         opponents = state.getOpponents(self.name)
         opponentToAttack = random.choice(opponents)
         candidateActions = state.legalTargets(opponentToAttack)
-        action = TorpedoAction(torpedo, random.choice(candidateActions), opponentToAttack)
+        action = TorpedoAction(randomTorpedo, random.choice(candidateActions), opponentToAttack)
         return action
 
     def incorporateFeedback(self, state, action, reward, newState):

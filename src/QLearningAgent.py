@@ -42,7 +42,7 @@ class QLearningAgent(Agent):
         opponentToAttack = state.getOpponents(self.name)[0]
         targets = state.legalTargets(opponentToAttack)
         torpedos = state.getTorpedos(self.name)
-        for torpedo, count in torpedos:
+        for torpedo, count in torpedos.iteritems():
             for target in targets:
                 actions.append(TorpedoAction(torpedo, target, opponentToAttack))
         return actions
