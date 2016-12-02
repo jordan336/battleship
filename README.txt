@@ -14,7 +14,6 @@ TODO List
 * Improve this readme
 * Move placeShips() logic out of Game
 * More unit testing
-* Agents should use State to get their list of torpedos, not Rules
 * State should update torpedo lists when an Agent fires a torpedo
 * Agent statistics
 * Grid needs to handle case where there is a hit at a position, but the ship still has hit points at that position.

@@ -5,17 +5,14 @@ import random
 
 class RandomAgent(Agent):
 
-    def __init__(self, name, rules):
+    def __init__(self, name):
         self.name = name
-        #TODO: remove
-        self.rules = rules
    
     def placeShip(self, ship): 
         raise NotImplementedError()
 
     def getAction(self, state): 
-        #TODO: torpedos should come from state, not rules
-        (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
+        (torpedo, torpedoCount) = random.choice(state.getTorpedos(self.name))
         opponents = state.getOpponents(self.name)
         opponentToAttack = random.choice(opponents)
         candidateActions = state.legalTargets(opponentToAttack)

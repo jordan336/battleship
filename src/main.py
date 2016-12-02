@@ -32,19 +32,19 @@ if __name__ == '__main__':
     for index, agent in enumerate(args.agents):
         if agent == 'Human':
             if index < len(args.names):
-                agents.append(HumanAgent(args.names[index], rules))
+                agents.append(HumanAgent(args.names[index]))
             else:
-                agents.append(HumanAgent('Human'+str(index), rules))
+                agents.append(HumanAgent('Human'+str(index)))
         elif agent == 'Random':
             if index < len(args.names):
-                agents.append(RandomAgent(args.names[index], rules))
+                agents.append(RandomAgent(args.names[index]))
             else:
-                agents.append(RandomAgent('Random'+str(index), rules))
+                agents.append(RandomAgent('Random'+str(index)))
         elif agent == 'HuntAndTarget':
             if index < len(args.names):
-                agents.append(HuntAndTargetAgent(args.names[index], rules))
+                agents.append(HuntAndTargetAgent(args.names[index]))
             else:
-                agents.append(HuntAndTargetAgent('Hunt'+str(), rules))
+                agents.append(HuntAndTargetAgent('Hunt'+str()))
         else:
             if index < len(args.names):
                 agents.append(QLearningAgent(args.names[index]))

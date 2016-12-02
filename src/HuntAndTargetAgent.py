@@ -5,19 +5,14 @@ import random
 
 class HuntAndTargetAgent(Agent):
 
-    def __init__(self, name, rules):
+    def __init__(self, name):
         self.name = name
 
-        #TODO: remove
-        self.rules = rules
-   
     def placeShip(self, ship): 
         raise NotImplementedError()
 
     def getAction(self, state): 
-
-        #TODO: should get the torpedos from the state, not the rules.
-        (torpedo, torpedoCount) = (self.rules.getTorpedos(None))[0]
+        (torpedo, torpedoCount) = random.choice(state.getTorpedos(self.name))
 
         #self.drawCurrentState(state)
     
