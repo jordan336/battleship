@@ -30,8 +30,3 @@ class Rules:
     def getTorpedos(agent):
         raise NotImplementedError()
 
-    #TODO: Is getScore() necessary?
-    @staticmethod
-    def getScore(agent):
-        raise NotImplementedError()
-
