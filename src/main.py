@@ -12,14 +12,16 @@ if __name__ == '__main__':
 
     # Parse command line arguments
     parser = argparse.ArgumentParser(description='Battleship game')
-    parser.add_argument('-i', '--iterations', type=int, nargs=1, default=[10], help='Number of game iterations to perform')
+    parser.add_argument('-g', '--games', type=int, nargs=1, default=[1], help='Number of games to play')
+    parser.add_argument('-t', '--train_iterations', type=int, nargs=1, default=[10], help='Number of training games to play')
     parser.add_argument('-a', '--agents', nargs='+', default=['QLearning'], choices=['Human', 'Random', 'HuntAndTarget', 'QLearning'], help='Agents to play the game')
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
     parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini'], help='Game rules')
     args = parser.parse_args()
 
     # Game iterations
-    numGamesToPlay = args.iterations[0]
+    numTestGamesToPlay = args.games[0]
+    numTrainingGamesToPlay = args.train_iterations[0]
 
     # Mini game is 5x5 for a quick game, classic game is 10x10
     if args.rules[0] == 'Classic':
@@ -63,14 +65,29 @@ if __name__ == '__main__':
 
     battleshipGame = Game(rules, agents)
 
-    for i in range(numGamesToPlay):
+    # training games
+    print '==============================='
+    print 'TRAINING GAMES'
+    print '==============================='
+    for i in range(numTrainingGamesToPlay):
+        battleshipGame.run()
+
+    # Prepare each agent for testing (e.g. set epsilon to 0)
+    for agent in agents:
+        agent.prepareForTesting()
+
+    # test games
+    print '==============================='
+    print 'TEST GAMES'
+    print '==============================='
+    for i in range(numTestGamesToPlay):
         numMoves, score = battleshipGame.run()
         avgNumMoves += numMoves
         avgScore += score
 
     print '==============================='
-    print 'Number of games played:', numGamesToPlay
-    print 'Avg number of moves taken:', (avgNumMoves / numGamesToPlay)
-    print 'Avg score:', (avgScore / numGamesToPlay)
+    print 'Number of test games played:', numTestGamesToPlay
+    print 'Avg number of moves taken:', (avgNumMoves / numTestGamesToPlay)
+    print 'Avg score:', (avgScore / numTestGamesToPlay)
     #battleshipGame.drawCurrentState()
 

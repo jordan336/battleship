@@ -20,3 +20,6 @@ class Agent:
     def incorporateFeedback(self, state, action, reward, newState):
         raise NotImplementedError()
 
+    def prepareForTesting(self):
+        raise NotImplementedError()
+

@@ -22,3 +22,6 @@ class RandomAgent(Agent):
     def incorporateFeedback(self, state, action, reward, newState):
         pass
 
+    def prepareForTesting(self):
+        pass
+

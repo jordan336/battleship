@@ -12,6 +12,19 @@ def identityFeatureExtractor(state, action):
     return [(featureKey, featureValue)]
 
 
+def distFeatureExtractor(state, action):
+    features = []
+    opponentBoard = state.getBoard(action.getTargetAgentName())
+    hitRowDist = opponentBoard.getDistNearestSameRowHit(action.getTarget().x, action.getTarget().y)
+    missRowDist = opponentBoard.getDistNearestSameRowMiss(action.getTarget().x, action.getTarget().y)
+    hitColDist = opponentBoard.getDistNearestSameColHit(action.getTarget().x, action.getTarget().y)
+    missColDist = opponentBoard.getDistNearestSameColMiss(action.getTarget().x, action.getTarget().y)
+    features.append(('hitRowDist='+str(hitRowDist), 1))
+    #features.append(('missRowDist='+str(missRowDist), 1))
+    features.append(('hitColDist='+str(hitColDist), 1))
+    #features.append(('missColDist='+str(missColDist), 1))
+    return features
+
 class QLearningAgent(Agent):
 
     def __init__(self, name):
@@ -19,7 +32,8 @@ class QLearningAgent(Agent):
         self.weights = defaultdict(float)
         self.discount = 1
         self.epsilon = 0.1
-        self.featureExtractor = identityFeatureExtractor
+        #self.featureExtractor = identityFeatureExtractor
+        self.featureExtractor = distFeatureExtractor
         self.numIters = 0
 
     # Return the Q function associated with the weights and features
@@ -69,4 +83,7 @@ class QLearningAgent(Agent):
 
         for f, v in self.featureExtractor(state, action):
             self.weights[f] = self.weights[f] - (update * v)
+
+    def prepareForTesting(self):
+        self.epsilon = 0
 
