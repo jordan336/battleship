@@ -29,7 +29,6 @@ class GridTestCase(unittest.TestCase):
         actual = collections.Counter(grid.getValidNeighbors(Position(1, 1)))
         self.assertTrue(expected == actual)
 
-
     def test_HitMissPosition(self):
         grid = Grid(10, 10)
         grid.setHitPosition(Position(1, 1))
@@ -40,5 +39,64 @@ class GridTestCase(unittest.TestCase):
         self.assertFalse(grid.queryPositionMissed(Position(2, 2)))
         self.assertEqual(collections.Counter([Position(1, 1), Position(2,2)]), collections.Counter(grid.getHitPositions()))
         self.assertEqual([], grid.getMissedPositions())
-        
+
+    def test_DistNearestSameRowHit(self):
+        grid = Grid(10, 10)
+        grid.setHitPosition(Position(1, 1))
+        self.assertEqual(-1, grid.getDistNearestSameRowHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowHit(1,1))
+        self.assertEqual(5, grid.getDistNearestSameRowHit(1,6))
+        grid.setHitPosition(Position(2, 1))
+        self.assertEqual(-1, grid.getDistNearestSameRowHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowHit(1,1))
+        self.assertEqual(5, grid.getDistNearestSameRowHit(1,6))
+        grid.setHitPosition(Position(1, 3))
+        self.assertEqual(-1, grid.getDistNearestSameRowHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowHit(1,1))
+        self.assertEqual(3, grid.getDistNearestSameRowHit(1,6))
+
+    def test_DistNearestSameRowMiss(self):
+        grid = Grid(10, 10)
+        grid.setMissedPosition(Position(1, 1))
+        self.assertEqual(-1, grid.getDistNearestSameRowMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowMiss(1,1))
+        self.assertEqual(5, grid.getDistNearestSameRowMiss(1,6))
+        grid.setMissedPosition(Position(2, 1))
+        self.assertEqual(-1, grid.getDistNearestSameRowMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowMiss(1,1))
+        self.assertEqual(5, grid.getDistNearestSameRowMiss(1,6))
+        grid.setMissedPosition(Position(1, 3))
+        self.assertEqual(-1, grid.getDistNearestSameRowMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameRowMiss(1,1))
+        self.assertEqual(3, grid.getDistNearestSameRowMiss(1,6))
+
+    def test_DistNearestSameColHit(self):
+        grid = Grid(10, 10)
+        grid.setHitPosition(Position(1, 1))
+        self.assertEqual(-1, grid.getDistNearestSameColHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColHit(1,1))
+        self.assertEqual(5, grid.getDistNearestSameColHit(6,1))
+        grid.setHitPosition(Position(1, 2))
+        self.assertEqual(-1, grid.getDistNearestSameColHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColHit(1,1))
+        self.assertEqual(5, grid.getDistNearestSameColHit(6,1))
+        grid.setHitPosition(Position(3, 1))
+        self.assertEqual(-1, grid.getDistNearestSameColHit(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColHit(1,1))
+        self.assertEqual(3, grid.getDistNearestSameColHit(6,1))
+
+    def test_DistNearestSameColMiss(self):
+        grid = Grid(10, 10)
+        grid.setMissedPosition(Position(1, 1))
+        self.assertEqual(-1, grid.getDistNearestSameColMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColMiss(1,1))
+        self.assertEqual(5, grid.getDistNearestSameColMiss(6,1))
+        grid.setMissedPosition(Position(1, 2))
+        self.assertEqual(-1, grid.getDistNearestSameColMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColMiss(1,1))
+        self.assertEqual(5, grid.getDistNearestSameColMiss(6,1))
+        grid.setMissedPosition(Position(3, 1))
+        self.assertEqual(-1, grid.getDistNearestSameColMiss(0,0))
+        self.assertEqual(0, grid.getDistNearestSameColMiss(1,1))
+        self.assertEqual(3, grid.getDistNearestSameColMiss(6,1))
 
