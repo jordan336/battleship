@@ -1,4 +1,3 @@
-
 from Position import Position
 from State import State
 from TextDisplay import TextDisplay
@@ -51,11 +50,11 @@ class Game:
                         fits = True
 
     """
-        placeShips()
+    shipFits()
 
-        Used by placeShips() to determine whether the ship with given length and position/orientation will fit on the game board. Return false if the ship will overlap with an existing ship that has already been placed, or falls out of the board's range. 
+    Used by placeShips() to determine whether the ship with given length and position/orientation will fit on the game board. Return false if the ship will overlap with an existing ship that has already been placed, or falls out of the board's range. 
 
-        TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
+    TODO: This is temporarily implemented in the Game module. It should be removed eventually and the work should be performed by game agents, either randomly, by AI or manually.
     """                        
     def shipFits(self, board, placedShips, length, headPosition, orientation):
         (x, y) = headPosition.getPosition()
