@@ -12,7 +12,6 @@ TODO List
 ---------
 * Improve Q-Learning agent
 * Improve this readme
-* Move placeShips() logic out of Game
 * More unit testing
 * Agent statistics
 * Grid needs to handle case where there is a hit at a position, but the ship still has hit points at that position.

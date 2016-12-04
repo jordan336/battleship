@@ -127,7 +127,6 @@ class Ship:
     place()
     
     Updates the ship's position and orientation to the values provided.
-    
     """
     def place(self, position, orientation):
         self.boardPosition = position

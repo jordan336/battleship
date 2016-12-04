@@ -4,6 +4,7 @@ from Position import Position
 from TorpedoAction import TorpedoAction
 import random
 import math
+import Util
 
 
 def identityFeatureExtractor(state, action):
@@ -56,8 +57,8 @@ class QLearningAgent(Agent):
     def getStepSize(self):
         return 1.0 / math.sqrt(self.numIters)
 
-    def placeShip(self, ship): 
-        raise NotImplementedError()
+    def placeShips(self, board, ships): 
+        Util.randomPlaceShips(board, ships)
 
     def actions(self, state):
         actions = []

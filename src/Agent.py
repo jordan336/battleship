@@ -11,7 +11,7 @@ class Agent:
     def getName(self):
         return self.name
 
-    def placeShip(self, Ship): 
+    def placeShips(self, board, ships): 
         raise NotImplementedError()
 
     def getAction(self, State): 

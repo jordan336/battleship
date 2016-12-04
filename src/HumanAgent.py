@@ -2,6 +2,7 @@ from Agent import Agent
 from Position import Position
 from TorpedoAction import TorpedoAction
 from TextDisplay import TextDisplay
+import Util
 
 class HumanAgent(Agent):
 
@@ -15,8 +16,8 @@ class HumanAgent(Agent):
         ships = state.getShips(opponentToAttack)
         TextDisplay.draw(board, ships, True) 
    
-    def placeShip(self, ship): 
-        raise NotImplementedError()
+    def placeShips(self, board, ships): 
+        Util.randomPlaceShips(board, ships)
 
     def getAction(self, state): 
 

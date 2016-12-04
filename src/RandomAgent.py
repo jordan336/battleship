@@ -2,14 +2,15 @@ from Agent import Agent
 from Position import Position
 from TorpedoAction import TorpedoAction
 import random
+import Util
 
 class RandomAgent(Agent):
 
     def __init__(self, name):
         self.name = name
    
-    def placeShip(self, ship): 
-        raise NotImplementedError()
+    def placeShips(self, board, ships): 
+        Util.randomPlaceShips(board, ships)
 
     def getAction(self, state): 
         randomTorpedo = random.choice(state.getTorpedos(self.name).keys())
