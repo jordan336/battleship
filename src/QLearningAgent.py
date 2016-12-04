@@ -19,10 +19,19 @@ def distFeatureExtractor(state, action):
     missRowDist = opponentBoard.getDistNearestSameRowMiss(action.getTarget().x, action.getTarget().y)
     hitColDist = opponentBoard.getDistNearestSameColHit(action.getTarget().x, action.getTarget().y)
     missColDist = opponentBoard.getDistNearestSameColMiss(action.getTarget().x, action.getTarget().y)
-    features.append(('hitRowDist='+str(hitRowDist), 1))
+
+    # exclude feature when there are no hits on the row
+    if hitRowDist != -1:
+        features.append(('hitRowDist='+str(hitRowDist), 1))
+
+    # exclude feature when there are no hits on the column
+    if hitColDist != -1:
+        features.append(('hitColDist='+str(hitColDist), 1))
+
+    # missing distances are killing performance, not fully understood why yet
     #features.append(('missRowDist='+str(missRowDist), 1))
-    features.append(('hitColDist='+str(hitColDist), 1))
     #features.append(('missColDist='+str(missColDist), 1))
+
     return features
 
 class QLearningAgent(Agent):
