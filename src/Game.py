@@ -15,6 +15,7 @@ class Game:
         
     def drawCurrentState(self):
         for agent in self.currentState.getAgents():
+            print 'Agent: ', agent
             board = self.currentState.getBoard(agent)
             ships = self.currentState.getShips(agent)
             TextDisplay.draw(board, ships, True) 
