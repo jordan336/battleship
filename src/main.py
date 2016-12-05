@@ -8,16 +8,19 @@ from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
 from QLearningAgent import QLearningAgent
 from NoOpAgent import NoOpAgent
+from Statistics import Statistics
 
 if __name__ == '__main__':
 
     # Parse command line arguments
-    parser = argparse.ArgumentParser(description='Battleship game')
+    parser = argparse.ArgumentParser(description='AI learning agent for the game of Battleship')
     parser.add_argument('-g', '--games', type=int, nargs=1, default=[1], help='Number of games to play')
     parser.add_argument('-t', '--train_iterations', type=int, nargs=1, default=[10], help='Number of training games to play')
     parser.add_argument('-a', '--agents', nargs='+', default=['QLearning'], choices=['Human', 'Random', 'HuntAndTarget', 'QLearning'], help='Agents to play the game')
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
     parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules')
+    parser.add_argument('-s', '--stats', action='store_true', default=False, help='Output statistics when all games are complete')
+    parser.add_argument('-c', '--constant_start_state', action='store_true', default=False, help='Always start from the same state')
     args = parser.parse_args()
 
     # Game iterations
@@ -66,7 +69,14 @@ if __name__ == '__main__':
     avgNumMoves = 0
     avgScore = 0
 
-    battleshipGame = Game(rules, agents)
+    # statistics
+    if args.stats:
+        stats = Statistics(rules, agents)
+        stats.prepareForTraining()
+    else:
+        stats = None
+
+    battleshipGame = Game(rules, agents, stats, args.constant_start_state)
 
     # training games
     print '==============================='
@@ -74,8 +84,12 @@ if __name__ == '__main__':
     print '==============================='
     for i in range(numTrainingGamesToPlay):
         battleshipGame.run()
+        if stats is not None:
+            stats.endGame()
 
-    # Prepare each agent for testing (e.g. set epsilon to 0)
+    # Prepare for testing (e.g. set epsilon to 0)
+    if stats is not None:
+        stats.prepareForTesting()
     for agent in agents:
         agent.prepareForTesting()
 
@@ -87,10 +101,15 @@ if __name__ == '__main__':
         numMoves, score = battleshipGame.run()
         avgNumMoves += numMoves
         avgScore += score
+        if stats is not None:
+            stats.endGame()
 
-    print '==============================='
-    print 'Number of test games played:', numTestGamesToPlay
-    print 'Avg number of moves taken:', (avgNumMoves / numTestGamesToPlay)
-    print 'Avg score:', (avgScore / numTestGamesToPlay)
-    #battleshipGame.drawCurrentState()
+    # end, output stats
+    if numTestGamesToPlay > 0:
+        print '==============================='
+        print 'Number of test games played:', numTestGamesToPlay
+        print 'Avg number of moves taken:', (avgNumMoves / numTestGamesToPlay)
+        print 'Avg score:', (avgScore / numTestGamesToPlay)
+    if stats is not None:
+        stats.outputStatistics()
 
