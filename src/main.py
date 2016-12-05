@@ -2,6 +2,7 @@ import argparse
 from Game import Game
 from ClassicRules import ClassicRules
 from MiniGameRules import MiniGameRules
+from OneShipRules import OneShipRules
 from HumanAgent import HumanAgent
 from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
@@ -16,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--train_iterations', type=int, nargs=1, default=[10], help='Number of training games to play')
     parser.add_argument('-a', '--agents', nargs='+', default=['QLearning'], choices=['Human', 'Random', 'HuntAndTarget', 'QLearning'], help='Agents to play the game')
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
-    parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini'], help='Game rules')
+    parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules')
     args = parser.parse_args()
 
     # Game iterations
@@ -26,6 +27,8 @@ if __name__ == '__main__':
     # Mini game is 5x5 for a quick game, classic game is 10x10
     if args.rules[0] == 'Classic':
         rules = ClassicRules
+    elif args.rules[0] == 'OneShip':
+        rules = OneShipRules
     else:
         rules = MiniGameRules
 

@@ -24,8 +24,10 @@ class Ship:
 
     - orientation:   Ship orientation, in clockwise degrees
 
+    - immovable:     True if the position is set at creation and the ship cannot later be moved.
+
     """
-    def __init__(self, name, damageList, value, boardPosition=Position(0, 0), orientation='0'):
+    def __init__(self, name, damageList, value, boardPosition=Position(0, 0), orientation='0', immovable=False):
         self.name = name
         self.damageList = damageList
         self.value = value
@@ -33,6 +35,7 @@ class Ship:
         self.orientation = orientation
         self.length = len(damageList)
         self.sunk = False
+        self.immovable = immovable
 
     def getName(self):
         return self.name
@@ -129,8 +132,9 @@ class Ship:
     Updates the ship's position and orientation to the values provided.
     """
     def place(self, position, orientation):
-        self.boardPosition = position
-        self.orientation = orientation
+        if not self.immovable:
+            self.boardPosition = position
+            self.orientation = orientation
 
     """
     takeDamage()
