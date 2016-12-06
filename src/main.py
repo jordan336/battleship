@@ -19,6 +19,7 @@ if __name__ == '__main__':
     parser.add_argument('-a', '--agents', nargs='+', default=['QLearning'], choices=['Human', 'Random', 'HuntAndTarget', 'QLearning'], help='Agents to play the game')
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
     parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules')
+    parser.add_argument('-R', '--train_rules', nargs=1, default=['NotSet'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules for training only')
     parser.add_argument('-s', '--stats', action='store_true', default=False, help='Output statistics when all games are complete')
     parser.add_argument('-c', '--constant_start_state', action='store_true', default=False, help='Always start from the same state')
     args = parser.parse_args()
@@ -27,6 +28,7 @@ if __name__ == '__main__':
     numTestGamesToPlay = args.games[0]
     numTrainingGamesToPlay = args.train_iterations[0]
 
+    # Test rules
     # Mini game is 5x5 for a quick game, classic game is 10x10
     if args.rules[0] == 'Classic':
         rules = ClassicRules
@@ -34,6 +36,16 @@ if __name__ == '__main__':
         rules = OneShipRules
     else:
         rules = MiniGameRules
+
+    # Training rules
+    if args.train_rules[0] == 'NotSet':
+        trainRules = rules
+    elif args.train_rules[0] == 'Classic':
+        trainRules = ClassicRules
+    elif args.train_rules[0] == 'OneShip':
+        trainRules = OneShipRules
+    else:
+        trainRules = MiniGameRules
 
     # Choose the agents to use for the game.
     agents = []
@@ -76,14 +88,14 @@ if __name__ == '__main__':
     else:
         stats = None
 
-    battleshipGame = Game(rules, agents, stats, args.constant_start_state)
 
     # training games
+    trainGame = Game(trainRules, agents, stats, args.constant_start_state)
     print '==============================='
     print 'TRAINING GAMES'
     print '==============================='
     for i in range(numTrainingGamesToPlay):
-        battleshipGame.run()
+        trainGame.run()
         if stats is not None:
             stats.endGame()
 
@@ -94,11 +106,12 @@ if __name__ == '__main__':
         agent.prepareForTesting()
 
     # test games
+    testGame = Game(rules, agents, stats, args.constant_start_state)
     print '==============================='
     print 'TEST GAMES'
     print '==============================='
     for i in range(numTestGamesToPlay):
-        numMoves, score = battleshipGame.run()
+        numMoves, score = testGame.run()
         avgNumMoves += numMoves
         avgScore += score
         if stats is not None:
