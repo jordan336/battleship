@@ -14,7 +14,7 @@ class OneShipRules(Rules):
     # One immovable ship, right in the middle of the game board
     @staticmethod
     def getShips(agent):
-        ship = Ship("OneShip", [1, 1, 1, 1], 10, boardPosition=Position(3, 3), immovable=True)
+        ship = Ship("OneShip", [1, 1, 1, 1], 100, boardPosition=Position(3, 3), immovable=True)
         return [ship]
 
     @staticmethod

@@ -81,16 +81,16 @@ class Grid:
         return self._getDistSameCol(self.getMissedPositions(), x, y)
 
     def _getDistSameRow(self, positions, x, y):
-        posOnSameRow = [pos for pos in positions if pos.x == x]
+        posOnSameRow = [pos for pos in positions if pos.y == y]
         if len(posOnSameRow) > 0:
-            return min(abs(y - pos.y) for pos in posOnSameRow)
+            return min(abs(x - pos.x) for pos in posOnSameRow)
         else:
             return -1
 
     def _getDistSameCol(self, positions, x, y):
-        posOnSameCol = [pos for pos in positions if pos.y == y]
+        posOnSameCol = [pos for pos in positions if pos.x == x]
         if len(posOnSameCol) > 0:
-            return min(abs(x - pos.x) for pos in posOnSameCol)
+            return min(abs(y - pos.y) for pos in posOnSameCol)
         else:
             return -1
 
