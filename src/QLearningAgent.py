@@ -79,7 +79,10 @@ class QLearningAgent(Agent):
         if random.random() < self.epsilon:
             return random.choice(self.actions(state))
         else:
-            return max((self.getQ(state, action), action) for action in self.actions(state))[1]
+            validActions = [(self.getQ(state, action), action) for action in self.actions(state)]
+            bestScore = max(validActions)[0]
+            bestActions = [validActions[index] for index in range(len(validActions)) if (validActions[index][0] == bestScore)]
+            return random.choice(bestActions)[1]
 
     def incorporateFeedback(self, state, action, reward, newState):
         v_opt = 0
