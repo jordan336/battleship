@@ -99,4 +99,6 @@ class QLearningAgent(Agent):
 
     def prepareForTesting(self):
         self.epsilon = 0
+        print "Learned weights: " 
+        print self.weights
 
