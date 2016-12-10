@@ -8,9 +8,6 @@ State
 Class representing the current game state, including each Agent's ships
 and torpedos.  The State should contain all information necessary for
 an Agent to make a decision about how to act.
-
-TODO: Each Agent should have statistics, like number of total shots, number of 
-      hits, etc.
 """
 class State:
 
@@ -155,9 +152,6 @@ class State:
 
     Return a number representing the current game score for the given agent.
     Currently, add up the score from every opponent ship.
-
-    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
-          base the score on the Agent's statisitics, see above comment.
 
     - agentName: The Agent's score to get
     """

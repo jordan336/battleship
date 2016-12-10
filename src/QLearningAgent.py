@@ -62,8 +62,8 @@ class QLearningAgent(Agent):
 
     def actions(self, state):
         actions = []
-        #TODO: Setting 0 only works for 1 opponent
-        opponentToAttack = state.getOpponents(self.name)[0]
+        # Randomly select an opponent to attack for now
+        opponentToAttack = random.choice(state.getOpponents(self.name))
         targets = state.legalTargets(opponentToAttack)
         torpedos = state.getTorpedos(self.name)
         for torpedo, count in torpedos.iteritems():

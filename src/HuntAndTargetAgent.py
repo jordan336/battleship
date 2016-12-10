@@ -14,11 +14,7 @@ class HuntAndTargetAgent(Agent):
 
     def getAction(self, state): 
         randomTorpedo = random.choice(state.getTorpedos(self.name).keys())
-
-        #self.drawCurrentState(state)
-    
-        #TODO: setting 0 only works for 1 opponent
-        opponentToAttack = state.getOpponents(self.name)[0]
+        opponentToAttack = random.choice(state.getOpponents(self.name))
 
         board = state.getBoard(opponentToAttack)
         candidateActions = []

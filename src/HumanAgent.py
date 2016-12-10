@@ -9,9 +9,7 @@ class HumanAgent(Agent):
     def __init__(self, name):
         self.name = name
    
-    def drawCurrentState(self, state):
-        #TODO Should not hardcode 0, only works with 1 opponent.
-        opponentToAttack = state.getOpponents(self.name)[0]
+    def drawCurrentState(self, state, opponentToAttack):
         board = state.getBoard(opponentToAttack)
         ships = state.getShips(opponentToAttack)
         TextDisplay.draw(board, ships, True) 
@@ -21,10 +19,22 @@ class HumanAgent(Agent):
 
     def getAction(self, state): 
 
-        #TODO Should not hardcode 0, only works with 1 opponent.
-        opponentToAttack = state.getOpponents(self.name)[0]
+        # Ask the human for the opponent to attack
+        while True:
+            print 'Please provide the index of the opponent to attack.'
+            for index, opponent in enumerate(state.getOpponents(self.name)):
+                print index, ": ", opponent
+            opponentIndex = raw_input('Enter opponent index: ')
+            if opponentIndex.isdigit():
+                opponentIndex = int(opponentIndex)
+                if opponentIndex >= 0 and opponentIndex < len(state.getOpponents(self.name)):
+                    break
+            print 'Invalid opponent index: ', opponentIndex
 
-        self.drawCurrentState(state)
+        opponentToAttack = state.getOpponents(self.name)[opponentIndex]
+
+        # Ask the human for the target coordinates
+        self.drawCurrentState(state, opponentToAttack)
         while True:
             print 'Hello human', self.name, '! Please provide x and y coordinates of your target.'
 

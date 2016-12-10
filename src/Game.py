@@ -69,7 +69,6 @@ class Game:
             oldState = self.currentState.deepCopy()
             self.currentState.generateSuccessor(action, currentAgentName, verbose)
             newState = self.currentState.deepCopy()
-            #TODO: a different reward calculation?
             reward = newState.getScore(currentAgentName) - oldState.getScore(currentAgentName)
 
             # Inform learning agents of s, a, r, s

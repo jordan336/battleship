@@ -17,8 +17,6 @@ TODO List
   An Agent should still be allowed to fire at a hit position in this case, or maybe its always allowed?
 * Scoring systems needs overhaul
 * Implement a logging system?
-* Support more than 2 agents (if desired):
-    - In a few places, the Agents expect only having 1 opponent
 
 
 Run Game
