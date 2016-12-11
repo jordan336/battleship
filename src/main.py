@@ -79,8 +79,8 @@ if __name__ == '__main__':
         agents.append(NoOpAgent('NoOp'+str(count)))
         count += 1
 
-    avgNumMoves = 0
-    avgScore = 0
+    avgNumMoves = {}
+    avgScore = {}
 
     # statistics
     if args.stats:
@@ -88,7 +88,6 @@ if __name__ == '__main__':
         stats.prepareForTraining()
     else:
         stats = None
-
 
     # training games
     trainGame = Game(trainRules, agents, stats, args.constant_start_state)
@@ -112,19 +111,28 @@ if __name__ == '__main__':
     print 'TEST GAMES'
     print '==============================='
     for i in range(numTestGamesToPlay):
-        numMoves, score = testGame.run()
-        avgNumMoves += numMoves
-        avgScore += score
+        gameStats = testGame.run()
+
+        # output per game stats
+        for agent, (moves, score) in gameStats.iteritems():
+            print '{:17s}: Moves ({:3d}), Score({:3d})'.format(agent, int(moves), int(score))
+            if agent in avgNumMoves:
+                avgNumMoves[agent] += moves
+                avgScore[agent] += score
+            else:
+                avgNumMoves[agent] = moves
+                avgScore[agent] = score
         if stats is not None:
             stats.outputStatistics()
             stats.endGame()
 
-    # end, output stats
+    # all test games complete, output cumulative stats
     if numTestGamesToPlay > 0:
+        print
         print '==============================='
         print 'Number of test games played:', numTestGamesToPlay
-        print 'Avg number of moves taken:', (avgNumMoves / numTestGamesToPlay)
-        print 'Avg score:', (avgScore / numTestGamesToPlay)
+        for agent in avgNumMoves:
+            print '{:17s}: Avg. number of moves taken ({:05.2f}), Avg. score({:06.2f})'.format(agent, (float(avgNumMoves[agent]) / numTestGamesToPlay), (float(avgScore[agent]) / numTestGamesToPlay))
     if stats is not None:
         stats.outputAllGamesStatistics()
 

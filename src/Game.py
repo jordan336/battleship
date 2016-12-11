@@ -80,11 +80,12 @@ class Game:
 
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
-        #TODO doesnt work with more than 1 agent
-        agent = self.currentState.getAgents()[0]
-        finalNumMoves = self.currentState.getMoveCount(agent)
-        finalScore = self.currentState.getScore(agent)
-        print 'Moves:', finalNumMoves, 'Score:', finalScore
 
-        return finalNumMoves, finalScore  #TODO: return array of final scores
+        # Return total number of moves and final score for each agent
+        returnStats = {}
+        for agent in self.currentState.getAgents():
+            moves = self.currentState.getMoveCount(agent)
+            score = self.currentState.getScore(agent)
+            returnStats[agent] = (moves, score)
+        return returnStats
 
