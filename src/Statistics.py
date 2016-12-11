@@ -1,3 +1,4 @@
+import os
 import matplotlib
 matplotlib.use('Agg')
 from matplotlib.colors import LogNorm
@@ -7,7 +8,8 @@ from State import State
 
 class Statistics:
 
-    PREFIX_FILEPATH = ''
+    # path to this script, up one directory to the battleship directory, append '/stats/'
+    PREFIX_STATS_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__))) + '/stats/'
     PREFIX_CUMULHITS='hits_'
     PREFIX_ALL_GAMES='AllGames_'
     PREFIX_CUMULHITSALLGAMES='avgHits' + PREFIX_ALL_GAMES
@@ -31,8 +33,10 @@ class Statistics:
             self.persist_numMovesPerGame[agent.getName()] = []
             maxMoves = self.boards[agent.getName()].getWidth() * self.boards[agent.getName()].getHeight()
             self.persist_hitCounters[agent.getName()] = [0 for i in range(maxMoves)]
+        # create the "stats" directory under battleship/, if it doesnt already exist
+        if not os.path.isdir(self.PREFIX_STATS_PATH):
+            os.mkdir(self.PREFIX_STATS_PATH)
         
-            
     """
     endGame()
 
@@ -144,7 +148,7 @@ class Statistics:
             pyplot.ylabel('Num. Hits')
             pyplot.title('Single game performance of agent ' + agentName)
             pyplot.grid(True)
-            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_CUMULHITS+'Game-'+str(self.currentGameNum)+'_'+agentName, bbox_inches='tight')
+            pyplot.savefig(self.PREFIX_STATS_PATH+self.PREFIX_CUMULHITS+'Game-'+str(self.currentGameNum)+'_'+agentName, bbox_inches='tight')
         
     """
     _outputHeatmaps()
@@ -163,7 +167,7 @@ class Statistics:
             pyplot.figure(figureCount, figsize=(9, 6))
             pyplot.hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]])
             pyplot.colorbar()
-            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_HEATMAP+self.PREFIX_ALL_GAMES+agentName, bbox_inches='tight')
+            pyplot.savefig(self.PREFIX_STATS_PATH+self.PREFIX_HEATMAP+self.PREFIX_ALL_GAMES+agentName, bbox_inches='tight')
             figureCount += 1
 
     """
@@ -187,7 +191,7 @@ class Statistics:
 
         figure.set_size_inches(9, 8.5)
         figure.colorbar(im, ax=axes.ravel().tolist())
-        figure.savefig(self.PREFIX_FILEPATH+self.PREFIX_COMBINED_HEATMAP+self.PREFIX_ALL_GAMES+names, bbox_inches='tight')
+        figure.savefig(self.PREFIX_STATS_PATH+self.PREFIX_COMBINED_HEATMAP+self.PREFIX_ALL_GAMES+names, bbox_inches='tight')
 
         
     """
@@ -221,5 +225,5 @@ class Statistics:
             pyplot.ylabel('Cumulative percentage of hitpoints acquired')
             pyplot.title('Average performance of agent ' + agentName)
             pyplot.grid(True)
-            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_CUMULHITSALLGAMES+agentName, bbox_inches='tight')
+            pyplot.savefig(self.PREFIX_STATS_PATH+self.PREFIX_CUMULHITSALLGAMES+agentName, bbox_inches='tight')
             
