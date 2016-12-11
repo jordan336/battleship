@@ -20,7 +20,8 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
     parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules')
     parser.add_argument('-R', '--train_rules', nargs=1, default=['NotSet'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules for training only')
-    parser.add_argument('-s', '--stats', action='store_true', default=False, help='Output statistics when all games are complete')
+    parser.add_argument('-s', '--stats', action='store_true', default=False, help='Output statistics for each game completed')
+    parser.add_argument('-S', '--stats_all', action='store_true', default=False, help='Output statistics when all games are complete')
     parser.add_argument('-c', '--constant_start_state', action='store_true', default=False, help='Always start from the same state')
     args = parser.parse_args()
 
@@ -115,6 +116,7 @@ if __name__ == '__main__':
         avgNumMoves += numMoves
         avgScore += score
         if stats is not None:
+            stats.outputStatistics()
             stats.endGame()
 
     # end, output stats
@@ -124,5 +126,5 @@ if __name__ == '__main__':
         print 'Avg number of moves taken:', (avgNumMoves / numTestGamesToPlay)
         print 'Avg score:', (avgScore / numTestGamesToPlay)
     if stats is not None:
-        stats.outputStatistics()
+        stats.outputAllGamesStatistics()
 

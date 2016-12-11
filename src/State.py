@@ -174,6 +174,19 @@ class State:
         return self.moveCounts[agentName] 
 
     """
+    getHitCount()
+
+    Return a number representing the number of successful hits.
+
+    - agentName: The Agent's hit count to get
+    """
+    def getHitCount(self, agentName):
+        hitCount = 0
+        for ship in self.getShips(agentName):
+            hitCount += ship.getHits()
+        return hitCount
+        
+    """
     legalTargets()
 
     Return a list of legal target positions for attacking the given Agent

@@ -167,3 +167,14 @@ class Ship:
     def getDamage(self):
         return sum(self.damageList)
 
+    """
+    getHits()
+
+    Get the number of squares occupied by the ship that contains zero hit points, i.e. squares that have been completely destroyed by torpedos.
+    """
+    def getHits(self):
+        amountDamaged = 0
+        for damage in self.damageList:
+            if damage == 0:
+                amountDamaged += 1
+        return amountDamaged
