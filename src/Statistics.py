@@ -9,9 +9,10 @@ class Statistics:
 
     PREFIX_FILEPATH = ''
     PREFIX_CUMULHITS='hits_'
-    PREFIX_CUMULHITSALLGAMES='avgHitsAllGames_'
+    PREFIX_ALL_GAMES='AllGames_'
+    PREFIX_CUMULHITSALLGAMES='avgHits' + PREFIX_ALL_GAMES
     PREFIX_HEATMAP = 'heatmap_'
-    PREFIX_COMBINED_HEATMAP = 'combinedHeatmap'
+    PREFIX_COMBINED_HEATMAP = 'combinedHeatmap_'
 
     def __init__(self, rules, agents):
         self.testing = False
@@ -116,8 +117,6 @@ class Statistics:
     Outputs stats, graphs, plots, files, etc.
     """
     def outputStatistics(self):   
-        self._outputHeatmaps()
-        self._outputCombinedHeatmap()
         self._outputCumulativeHitCounts()
 
     """
@@ -143,7 +142,7 @@ class Statistics:
             pyplot.plot(xdat, ydat)
             pyplot.xlabel('Num. Moves')
             pyplot.ylabel('Num. Hits')
-            pyplot.title('Single game perfromance of agent ' + agentName)
+            pyplot.title('Single game performance of agent ' + agentName)
             pyplot.grid(True)
             pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_CUMULHITS+'Game-'+str(self.currentGameNum)+'_'+agentName, bbox_inches='tight')
         
@@ -164,7 +163,7 @@ class Statistics:
             pyplot.figure(figureCount, figsize=(9, 6))
             pyplot.hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]])
             pyplot.colorbar()
-            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_HEATMAP+'Game-'+str(self.currentGameNum)+'_'+agentName, bbox_inches='tight')
+            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_HEATMAP+self.PREFIX_ALL_GAMES+agentName, bbox_inches='tight')
             figureCount += 1
 
     """
@@ -188,7 +187,7 @@ class Statistics:
 
         figure.set_size_inches(9, 8.5)
         figure.colorbar(im, ax=axes.ravel().tolist())
-        figure.savefig(self.PREFIX_FILEPATH+self.PREFIX_COMBINED_HEATMAP+'_'+'Game-'+str(self.currentGameNum)+'_'+names, bbox_inches='tight')
+        figure.savefig(self.PREFIX_FILEPATH+self.PREFIX_COMBINED_HEATMAP+self.PREFIX_ALL_GAMES+names, bbox_inches='tight')
 
         
     """
@@ -197,6 +196,8 @@ class Statistics:
     Outputs the persistent stats, graphs, plots, files, etc. for all the games that have been played
     """
     def outputAllGamesStatistics(self):
+        self._outputHeatmaps()
+        self._outputCombinedHeatmap()
         self._outputAllGamesHitCounts()
         
         
@@ -220,5 +221,5 @@ class Statistics:
             pyplot.ylabel('Cumulative percentage of hitpoints acquired')
             pyplot.title('Average performance of agent ' + agentName)
             pyplot.grid(True)
-            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_CUMULHITSALLGAMES+'_'+agentName, bbox_inches='tight')
+            pyplot.savefig(self.PREFIX_FILEPATH+self.PREFIX_CUMULHITSALLGAMES+agentName, bbox_inches='tight')
             
