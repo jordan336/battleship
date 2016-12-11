@@ -5,6 +5,10 @@ from matplotlib.colors import LogNorm
 import matplotlib.pyplot as pyplot
 from Action import Action
 from State import State
+import sys
+import shutil
+from StringIO import StringIO
+from TextDisplay import TextDisplay
 
 class Statistics:
 
@@ -18,6 +22,7 @@ class Statistics:
 
     def __init__(self, rules, agents):
         self.testing = False
+        self.logStatesToFile = True
         self.currentGameNum = 1
         self.agentNames = []
         self.targetCounters = {}
@@ -25,6 +30,7 @@ class Statistics:
         self.persist_numMovesPerGame = {}
         self.persist_hitCounters = {}
         self.boards = {}
+        self.logBuffer = {}
         for agent in agents:
             self.agentNames.append(agent.getName())
             self.targetCounters[agent.getName()] = []
@@ -33,6 +39,7 @@ class Statistics:
             self.persist_numMovesPerGame[agent.getName()] = []
             maxMoves = self.boards[agent.getName()].getWidth() * self.boards[agent.getName()].getHeight()
             self.persist_hitCounters[agent.getName()] = [0 for i in range(maxMoves)]
+            self.logBuffer[agent.getName()] = StringIO()
         # create the "stats" directory under battleship/, if it doesnt already exist
         if not os.path.isdir(self.PREFIX_STATS_PATH):
             os.mkdir(self.PREFIX_STATS_PATH)
@@ -47,6 +54,12 @@ class Statistics:
             return
         self._savePersistentData()
         for agentName in self.agentNames:
+            if self.logBuffer[agentName].len > 0:
+                with open(self.PREFIX_STATS_PATH+'Game-'+str(self.currentGameNum)+'_'+agentName+".txt","w") as f:
+                    self.logBuffer[agentName].seek (0)
+                    shutil.copyfileobj (self.logBuffer[agentName], f)
+                    f.close()
+            self.logBuffer[agentName] = StringIO()
             self.targetCounters[agentName] = []
             self.hitCounters[agentName] = []
         self.currentGameNum += 1
@@ -83,6 +96,16 @@ class Statistics:
         if action is not None:
             if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
                 self.targetCounters[agentName].append(action.getTarget())
+                if self.logStatesToFile: 
+                    orig_stdout = sys.stdout
+                    sys.stdout = self.logBuffer[agentName]
+                    
+                    print "Move #", len(self.targetCounters[agentName]), "Targeting: ", action.getTarget()
+                    board = newState.getBoard(opponentName)
+                    ships = newState.getShips(opponentName)
+                    TextDisplay.draw(board, ships, True) 
+
+                    sys.stdout = orig_stdout
 
     """
     _savePersistentData()
@@ -218,8 +241,6 @@ class Statistics:
             ydat = self.persist_hitCounters[agentName]
             for i in range(maxMoves):
                 xdat.append(i)
-            #for i in range(maxMoves):
-            #    print "cumul:", xdat[i], ydat[i]
             pyplot.plot(xdat, ydat)
             pyplot.xlabel('Num. Moves')
             pyplot.ylabel('Cumulative percentage of hitpoints acquired')
