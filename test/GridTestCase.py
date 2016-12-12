@@ -100,3 +100,30 @@ class GridTestCase(unittest.TestCase):
         self.assertEqual(0, grid.getDistNearestSameColMiss(1,1))
         self.assertEqual(3, grid.getDistNearestSameColMiss(1,6))
 
+    def test_ContinuousVerticalHits(self):
+        grid = Grid(10, 10)
+        self.assertEqual(1, grid.getContinuousVerticalHits(5, 5))
+        self.assertEqual(1, grid.getContinuousVerticalHits(0, 5))
+        grid.setHitPosition(Position(0, 1))
+        grid.setHitPosition(Position(0, 2))
+        self.assertEqual(3, grid.getContinuousVerticalHits(0, 0))
+        self.assertEqual(3, grid.getContinuousVerticalHits(0, 3))
+        grid.setHitPosition(Position(0, 4))
+        self.assertEqual(4, grid.getContinuousVerticalHits(0, 3))
+        grid.setHitPosition(Position(0, 7))
+        self.assertEqual(4, grid.getContinuousVerticalHits(0, 3))
+
+    def test_ContinuousHorizontalHits(self):
+        grid = Grid(10, 10)
+        self.assertEqual(1, grid.getContinuousHorizontalHits(5, 5))
+        self.assertEqual(1, grid.getContinuousHorizontalHits(5, 0))
+        grid.setHitPosition(Position(1, 0))
+        grid.setHitPosition(Position(2, 0))
+        self.assertEqual(3, grid.getContinuousHorizontalHits(0, 0))
+        self.assertEqual(3, grid.getContinuousHorizontalHits(3, 0))
+        grid.setHitPosition(Position(4, 0))
+        self.assertEqual(4, grid.getContinuousHorizontalHits(3, 0))
+        grid.setHitPosition(Position(7, 0))
+        self.assertEqual(4, grid.getContinuousHorizontalHits(3, 0))
+
+

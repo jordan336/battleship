@@ -7,6 +7,9 @@ import math
 import Util
 
 
+#TODO remove
+from TextDisplay import TextDisplay
+
 def identityFeatureExtractor(state, action):
     featureKey = (state, action)
     featureValue = 1
@@ -15,11 +18,16 @@ def identityFeatureExtractor(state, action):
 
 def distFeatureExtractor(state, action):
     features = []
+    targetX = action.getTarget().x
+    targetY = action.getTarget().y
     opponentBoard = state.getBoard(action.getTargetAgentName())
-    hitRowDist = opponentBoard.getDistNearestSameRowHit(action.getTarget().x, action.getTarget().y)
-    missRowDist = opponentBoard.getDistNearestSameRowMiss(action.getTarget().x, action.getTarget().y)
-    hitColDist = opponentBoard.getDistNearestSameColHit(action.getTarget().x, action.getTarget().y)
-    missColDist = opponentBoard.getDistNearestSameColMiss(action.getTarget().x, action.getTarget().y)
+    hitRowDist = opponentBoard.getDistNearestSameRowHit(targetX, targetY)
+    missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY)
+    hitColDist = opponentBoard.getDistNearestSameColHit(targetX, targetY)
+    missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY)
+    continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
+    continuousHorizontalHits = opponentBoard.getContinuousHorizontalHits(targetX, targetY)
+    maxContiguousHits = max(continuousVerticalHits, continuousHorizontalHits)
 
     # exclude feature when there are no hits on the row
     if hitRowDist != -1:
@@ -32,6 +40,11 @@ def distFeatureExtractor(state, action):
     # missing distances are killing performance, not fully understood why yet
     #features.append(('missRowDist='+str(missRowDist), 1))
     #features.append(('missColDist='+str(missColDist), 1))
+
+    # continuous hits
+    # disable for now until more testing
+    #if maxContiguousHits != 1:
+        #features.append(('contiguousHits='+str(maxContiguousHits), 1))
 
     return features
 
@@ -75,6 +88,12 @@ class QLearningAgent(Agent):
     # Here we use the epsilon-greedy algorithm: with probability
     # |epsilon|, take a random action.
     def getAction(self, state):
+
+        # TODO remove
+        if self.epsilon == 0:
+            opp = state.getOpponents(self.name)[0]
+            #TextDisplay.draw(state.getBoard(opp), state.getShips(opp), True) 
+
         self.numIters += 1
         if random.random() < self.epsilon:
             return random.choice(self.actions(state))

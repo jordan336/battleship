@@ -94,3 +94,42 @@ class Grid:
         else:
             return -1
 
+    """
+    getContinuousVerticalHits()
+
+    Return the number of continuous vertical hits, assuming the 
+    given position is also a hit.
+    """
+    def getContinuousVerticalHits(self, x, y):
+        posOnSameCol = [pos for pos in self.getHitPositions() if pos.x == x]
+        continuous = [Position(x, y)]
+        noChange = False
+        while not noChange:
+            noChange = True
+            for pos in posOnSameCol:
+                for continuousPos in continuous:
+                    if pos not in continuous and abs(pos.y - continuousPos.y) == 1:
+                        continuous.append(pos)
+                        noChange = False
+        return len(continuous)
+
+    """
+    getContinuousHorizontalHits()
+
+    Return the number of continuous horizontal hits, assuming the 
+    given position is also a hit.
+    """
+    def getContinuousHorizontalHits(self, x, y):
+        posOnSameRow = [pos for pos in self.getHitPositions() if pos.y == y]
+        continuous = [Position(x, y)]
+        noChange = False
+        while not noChange:
+            noChange = True
+            for pos in posOnSameRow:
+                for continuousPos in continuous:
+                    if pos not in continuous and abs(pos.x - continuousPos.x) == 1:
+                        continuous.append(pos)
+                        noChange = False
+        return len(continuous)
+
+
