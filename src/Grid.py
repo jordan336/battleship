@@ -68,17 +68,21 @@ class Grid:
 
         return neighbors
 
-    def getDistNearestSameRowHit(self, x, y):
-        return self._getDistSameRow(self.getHitPositions(), x, y)
+    def getDistNearestSameRowHit(self, x, y, ignorePositions=[]):
+        positions = [pos for pos in self.getHitPositions() if pos not in ignorePositions]
+        return self._getDistSameRow(positions, x, y)
 
-    def getDistNearestSameRowMiss(self, x, y):
-        return self._getDistSameRow(self.getMissedPositions(), x, y)
+    def getDistNearestSameRowMiss(self, x, y, ignorePositions=[]):
+        positions = [pos for pos in self.getMissedPositions() if pos not in ignorePositions]
+        return self._getDistSameRow(positions, x, y)
 
-    def getDistNearestSameColHit(self, x, y):
-        return self._getDistSameCol(self.getHitPositions(), x, y)
+    def getDistNearestSameColHit(self, x, y, ignorePositions=[]):
+        positions = [pos for pos in self.getHitPositions() if pos not in ignorePositions]
+        return self._getDistSameCol(positions, x, y)
 
-    def getDistNearestSameColMiss(self, x, y):
-        return self._getDistSameCol(self.getMissedPositions(), x, y)
+    def getDistNearestSameColMiss(self, x, y, ignorePositions=[]):
+        positions = [pos for pos in self.getMissedPositions() if pos not in ignorePositions]
+        return self._getDistSameCol(positions, x, y)
 
     def _getDistSameRow(self, positions, x, y):
         posOnSameRow = [pos for pos in positions if pos.y == y]

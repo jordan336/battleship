@@ -5,10 +5,7 @@ from TorpedoAction import TorpedoAction
 import random
 import math
 import Util
-
-
-#TODO remove
-from TextDisplay import TextDisplay
+from TextDisplay import TextDisplay   # TODO remove
 
 def identityFeatureExtractor(state, action):
     featureKey = (state, action)
@@ -18,10 +15,14 @@ def identityFeatureExtractor(state, action):
 
 def featureExtractor(state, action):
     features = []
+    sunkPositions = []
     targetX = action.getTarget().x
     targetY = action.getTarget().y
     opponentBoard = state.getBoard(action.getTargetAgentName())
     opponentShips = state.getShips(action.getTargetAgentName())
+    for ship in opponentShips:
+        if ship.isSunk():
+            sunkPositions += ship.getPositions()
 
     # Decide if we are hunting for a new target, or if an opponent ship is damaged
     hunting = True
@@ -29,28 +30,31 @@ def featureExtractor(state, action):
         if not ship.isSunk() and ship.getHits() > 0:
             hunting = False
 
+    # Horizontal distance to the nearest hit square, excluding sunk ships
     # exclude feature when there are no hits on the row
-    hitRowDist = opponentBoard.getDistNearestSameRowHit(targetX, targetY)
+    hitRowDist = opponentBoard.getDistNearestSameRowHit(targetX, targetY, sunkPositions)
     if hitRowDist != -1:
         features.append(('hitRowDist='+str(hitRowDist), 1))
 
+    # Vertical distance to the nearest hit square, excluding sunk ships
     # exclude feature when there are no hits on the column
-    hitColDist = opponentBoard.getDistNearestSameColHit(targetX, targetY)
+    hitColDist = opponentBoard.getDistNearestSameColHit(targetX, targetY, sunkPositions)
     if hitColDist != -1:
         features.append(('hitColDist='+str(hitColDist), 1))
 
     # missing distances are killing performance, not fully understood why yet
-    #missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY)
-    #missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY)
+    #missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY, sunkPositions)
+    #missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY, sunkPositions)
     #features.append(('missRowDist='+str(missRowDist), 1))
     #features.append(('missColDist='+str(missColDist), 1))
 
     # continuous hits if targeting
-    continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
-    continuousHorizontalHits = opponentBoard.getContinuousHorizontalHits(targetX, targetY)
-    maxContiguousHits = max(continuousVerticalHits, continuousHorizontalHits)
-    if not hunting and maxContiguousHits != 1:
-        features.append(('contiguousHits='+str(maxContiguousHits), 1))
+    if not hunting:
+        continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
+        continuousHorizontalHits = opponentBoard.getContinuousHorizontalHits(targetX, targetY)
+        maxContiguousHits = max(continuousVerticalHits, continuousHorizontalHits)
+        if maxContiguousHits != 1:
+            features.append(('contiguousHits='+str(maxContiguousHits), 1))
 
     # percentage of opponent unhit ships that fit in the unexplored regions
     if hunting:
