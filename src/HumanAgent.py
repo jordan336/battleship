@@ -20,16 +20,19 @@ class HumanAgent(Agent):
     def getAction(self, state): 
 
         # Ask the human for the opponent to attack
-        while True:
-            print 'Please provide the index of the opponent to attack.'
-            for index, opponent in enumerate(state.getOpponents(self.name)):
-                print index, ": ", opponent
-            opponentIndex = raw_input('Enter opponent index: ')
-            if opponentIndex.isdigit():
-                opponentIndex = int(opponentIndex)
-                if opponentIndex >= 0 and opponentIndex < len(state.getOpponents(self.name)):
-                    break
-            print 'Invalid opponent index: ', opponentIndex
+        if len(state.getOpponents(self.name)) > 1:
+            while True:
+                print 'Please provide the index of the opponent to attack.'
+                for index, opponent in enumerate(state.getOpponents(self.name)):
+                    print index, ": ", opponent
+                opponentIndex = raw_input('Enter opponent index: ')
+                if opponentIndex.isdigit():
+                    opponentIndex = int(opponentIndex)
+                    if opponentIndex >= 0 and opponentIndex < len(state.getOpponents(self.name)):
+                        break
+                print 'Invalid opponent index: ', opponentIndex
+        else:
+            opponentIndex = 0
 
         opponentToAttack = state.getOpponents(self.name)[opponentIndex]
 
@@ -49,26 +52,28 @@ class HumanAgent(Agent):
             if inputPos in state.legalTargets(opponentToAttack):
 
                 # get torpedo to fire
-                while True:
-                    availableTorpedos = {}
+                if len(state.getTorpedos(self.name)) > 1:
+                    while True:
+                        availableTorpedos = {}
 
-                    for index, (torpedo, count) in enumerate(state.getTorpedos(self.name).iteritems()):
-                        if count > 0:
-                            print index, ': ', torpedo.getTorpedoType(), '[', count, ']'
-                            availableTorpedos[index] = torpedo
+                        for index, (torpedo, count) in enumerate(state.getTorpedos(self.name).iteritems()):
+                            if count > 0:
+                                print index, ': ', torpedo.getTorpedoType(), '[', count, ']'
+                                availableTorpedos[index] = torpedo
 
-                    torpedoIndex = raw_input('Enter the torpedo index: ')
-                    if not torpedoIndex.isdigit():
-                        print 'Invalid torpedo index'
-                        continue
-                    torpedoIndex = int(torpedoIndex)
+                        torpedoIndex = raw_input('Enter the torpedo index: ')
+                        if not torpedoIndex.isdigit():
+                            print 'Invalid torpedo index'
+                            continue
+                        torpedoIndex = int(torpedoIndex)
 
-                    if torpedoIndex in availableTorpedos.keys():
-                        action = TorpedoAction(availableTorpedos[torpedoIndex], inputPos, opponentToAttack)
-                        return action
+                        if torpedoIndex in availableTorpedos.keys():
+                            return TorpedoAction(availableTorpedos[torpedoIndex], inputPos, opponentToAttack)
 
-                    else:
-                        print 'Invalid torpedo; please try again.'
+                        else:
+                            print 'Invalid torpedo; please try again.'
+                else:
+                    return TorpedoAction(state.getTorpedos(self.name).keys()[0], inputPos, opponentToAttack)
 
             else:
                 print 'Invalid target; please try again.'
