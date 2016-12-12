@@ -16,35 +16,50 @@ def identityFeatureExtractor(state, action):
     return [(featureKey, featureValue)]
 
 
-def distFeatureExtractor(state, action):
+def featureExtractor(state, action):
     features = []
     targetX = action.getTarget().x
     targetY = action.getTarget().y
     opponentBoard = state.getBoard(action.getTargetAgentName())
-    hitRowDist = opponentBoard.getDistNearestSameRowHit(targetX, targetY)
-    missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY)
-    hitColDist = opponentBoard.getDistNearestSameColHit(targetX, targetY)
-    missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY)
-    continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
-    continuousHorizontalHits = opponentBoard.getContinuousHorizontalHits(targetX, targetY)
-    maxContiguousHits = max(continuousVerticalHits, continuousHorizontalHits)
+    opponentShips = state.getShips(action.getTargetAgentName())
+
+    # Decide if we are hunting for a new target, or if an opponent ship is damaged
+    hunting = True
+    for ship in opponentShips:
+        if not ship.isSunk() and ship.getHits() > 0:
+            hunting = False
 
     # exclude feature when there are no hits on the row
+    hitRowDist = opponentBoard.getDistNearestSameRowHit(targetX, targetY)
     if hitRowDist != -1:
         features.append(('hitRowDist='+str(hitRowDist), 1))
 
     # exclude feature when there are no hits on the column
+    hitColDist = opponentBoard.getDistNearestSameColHit(targetX, targetY)
     if hitColDist != -1:
         features.append(('hitColDist='+str(hitColDist), 1))
 
     # missing distances are killing performance, not fully understood why yet
+    #missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY)
+    #missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY)
     #features.append(('missRowDist='+str(missRowDist), 1))
     #features.append(('missColDist='+str(missColDist), 1))
 
-    # continuous hits
-    # disable for now until more testing
-    #if maxContiguousHits != 1:
-        #features.append(('contiguousHits='+str(maxContiguousHits), 1))
+    # continuous hits if targeting
+    continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
+    continuousHorizontalHits = opponentBoard.getContinuousHorizontalHits(targetX, targetY)
+    maxContiguousHits = max(continuousVerticalHits, continuousHorizontalHits)
+    if not hunting and maxContiguousHits != 1:
+        features.append(('contiguousHits='+str(maxContiguousHits), 1))
+
+    # percentage of opponent unhit ships that fit in the unexplored regions
+    if hunting:
+        leftHorMissedLen = opponentBoard.getLeftHorizontalMissedLength(targetX, targetY)
+        rightHorMissedLen = opponentBoard.getRightHorizontalMissedLength(targetX, targetY)
+        upVerMissedLen = opponentBoard.getUpVerticalMissedLength(targetX, targetY)
+        downVerMissedLen = opponentBoard.getDownVerticalMissedLength(targetX, targetY)
+        percentageUnhitShipsFit = Util.percentageUnhitShipsFit(opponentShips, rightHorMissedLen, leftHorMissedLen, upVerMissedLen, downVerMissedLen)
+        features.append(('percentageUnhitShipsFit', percentageUnhitShipsFit))
 
     return features
 
@@ -56,7 +71,7 @@ class QLearningAgent(Agent):
         self.discount = 1
         self.epsilon = 0.1
         #self.featureExtractor = identityFeatureExtractor
-        self.featureExtractor = distFeatureExtractor
+        self.featureExtractor = featureExtractor
         self.numIters = 0
 
     # Return the Q function associated with the weights and features

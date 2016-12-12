@@ -44,3 +44,46 @@ def shipFits(board, placedShips, length, headPosition, orientation):
             y -= 1
     return True
     
+"""
+percentUnhitShipsFit()
+
+Return the percentage of ship configurations that fit in the given
+unexplored vertical and horizontal regions.  Only consider ships
+that have not been hit yet.
+"""
+def percentageUnhitShipsFit(ships, rightHorUnexploredLen, leftHorUnexploredLen, upVerUnexploredLen, downVerUnexploredLen):
+
+    total = 0
+    fits = 0
+
+    for ship in ships:
+
+        # if the ship has not been hit yet
+        if ship.getHits() == 0:
+
+            # each ship can be oriented 0, 90, 180, or 270 degrees
+            total += 4
+
+            # check if ship fits, 0 degree
+            if ship.getLength() <= rightHorUnexploredLen:
+                fits += 1
+
+            # check if ship fits, 90 degree
+            if ship.getLength() <= upVerUnexploredLen:
+                fits += 1
+
+            # check if ship fits, 180 degree
+            if ship.getLength() <= leftHorUnexploredLen:
+                fits += 1
+
+            # check if ship fits, 270 degree
+            if ship.getLength() <= downVerUnexploredLen:
+                fits += 1
+
+    # return percentage of ship orientations that fit in the unexplored regions
+    if total > 0:
+        return float(fits) / total
+    return 1
+
+
+

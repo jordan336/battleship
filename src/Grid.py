@@ -132,4 +132,96 @@ class Grid:
                         noChange = False
         return len(continuous)
 
+    """
+    getDownVerticalMissedLength()
+
+    Get the downward vertical length of the continuous unmissed squares containing x, y.
+    """
+    def getDownVerticalMissedLength(self, x, y):
+
+        if self.queryPosition(Position(x, y)) == 'missed':
+            return 0
+
+        gapSquares = [Position(x, y)]
+
+        # Explore downwards in the column
+        col = y - 1
+        while col >= 0:
+            if self.queryPosition(Position(x, col)) != 'missed':            
+                gapSquares.append(Position(x, col))
+                col -= 1
+            else:
+                break
+
+        return len(gapSquares)
+
+    """
+    getUpVerticalMissedLength()
+
+    Get the upward vertical length of the continuous unmissed squares containing x, y.
+    """
+    def getUpVerticalMissedLength(self, x, y):
+
+        if self.queryPosition(Position(x, y)) == 'missed':
+            return 0
+
+        gapSquares = [Position(x, y)]
+
+        # Explore upwards in the column
+        col = y + 1
+        while col < self.height:
+            if self.queryPosition(Position(x, col)) != 'missed':            
+                gapSquares.append(Position(x, col))
+                col += 1
+            else:
+                break
+
+        return len(gapSquares)
+
+    """
+    getLeftHorizontalMissedLength()
+
+    Get the leftward horizontal length of the continuous unmissed squares containing x, y.
+    """
+    def getLeftHorizontalMissedLength(self, x, y):
+
+        if self.queryPosition(Position(x, y)) == 'missed':
+            return 0
+
+        gapSquares = [Position(x, y)]
+
+        # Explore leftwards in the row
+        row = x - 1
+        while row >= 0:
+            if self.queryPosition(Position(row, y)) != 'missed':            
+                gapSquares.append(Position(row, y))
+                row -= 1
+            else:
+                break
+
+        return len(gapSquares)
+
+    """
+    getRightHorizontalMissedLength()
+
+    Get the rightward horizontal length of the continuous unmissed squares containing x, y.
+    """
+    def getRightHorizontalMissedLength(self, x, y):
+
+        if self.queryPosition(Position(x, y)) == 'missed':
+            return 0
+
+        gapSquares = [Position(x, y)]
+
+        # Explore rightwards in the row
+        row = x + 1
+        while row < self.width:
+            if self.queryPosition(Position(row, y)) != 'missed':            
+                gapSquares.append(Position(row, y))
+                row += 1
+            else:
+                break
+
+        return len(gapSquares)
+
 

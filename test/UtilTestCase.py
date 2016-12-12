@@ -41,3 +41,27 @@ class UtilTestCase(unittest.TestCase):
             newShipList = [s for s in ships if s.getName() is not ship.getName()]
             self.assertTrue(Util.shipFits(board, newShipList, ship.getLength(), ship.getPosition(), ship.getOrientation()))
 
+    def test_percentageUnhitShipsFit(self):
+        shipsA = [Ship('a', [1, 1], value=1)]
+        self.assertEquals(1, Util.percentageUnhitShipsFit(shipsA, 2, 2, 2, 2))
+        self.assertEquals(1, Util.percentageUnhitShipsFit(shipsA, 10, 10, 5, 5))
+        self.assertEquals(0.5, Util.percentageUnhitShipsFit(shipsA, 1, 1, 2, 2))
+        self.assertEquals(0.5, Util.percentageUnhitShipsFit(shipsA, 2, 2, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 2, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 2, 1, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 1, 2, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 1, 1, 2))
+        self.assertEquals(0, Util.percentageUnhitShipsFit(shipsA, 1, 1, 1, 1))
+        shipsB = [Ship('a', [1, 1], value=1), Ship('b', [0, 1], value=1)]
+        self.assertEquals(1, Util.percentageUnhitShipsFit(shipsA, 2, 2, 2, 2))
+        self.assertEquals(1, Util.percentageUnhitShipsFit(shipsA, 10, 10, 5, 5))
+        self.assertEquals(0.5, Util.percentageUnhitShipsFit(shipsA, 1, 1, 2, 2))
+        self.assertEquals(0.5, Util.percentageUnhitShipsFit(shipsA, 2, 2, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 2, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 2, 1, 1, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 1, 2, 1))
+        self.assertEquals(0.25, Util.percentageUnhitShipsFit(shipsA, 1, 1, 1, 2))
+        self.assertEquals(0, Util.percentageUnhitShipsFit(shipsA, 1, 1, 1, 1))
+        shipsC = [Ship('a', [1, 0], value=1), Ship('b', [0, 1], value=1)]
+        self.assertEquals(1, Util.percentageUnhitShipsFit(shipsC, 2, 2, 2, 2))
+
