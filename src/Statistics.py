@@ -92,19 +92,22 @@ class Statistics:
         # For stats purpose, assume just one opponent for now.
         # Need to get this because we are actually recording the number of hits made by the agent on the opponent's game board, not on the agent's board.
         opponentName = newState.getOpponents(agentName)[0]
-        self.hitCounters[opponentName].append(newState.getHitCount(agentName) )
+        hitCount = newState.getHitCount(opponentName)
+        actionResult = 'Missed'
+        if (len(self.hitCounters[agentName]) > 0 and hitCount > self.hitCounters[agentName][-1]) or (len(self.hitCounters[agentName]) == 0 and hitCount > 0): 
+            actionResult = 'Hit'
+        self.hitCounters[agentName].append(hitCount )
         if action is not None:
             if action.getType() == Action.ACTION_TYPE_FIRE_TORPEDO:
                 self.targetCounters[agentName].append(action.getTarget())
+                # Output the game board to log buffer (we will output the buffer to a text file at end of game)
                 if self.logStatesToFile: 
                     orig_stdout = sys.stdout
                     sys.stdout = self.logBuffer[agentName]
-                    
-                    print "Move #", len(self.targetCounters[agentName]), "Targeting: ", action.getTarget()
+                    print "Move #", len(self.targetCounters[agentName]), "Targeting: ", action.getTarget(), "Result: ", actionResult
                     board = newState.getBoard(opponentName)
                     ships = newState.getShips(opponentName)
                     TextDisplay.draw(board, ships, True) 
-
                     sys.stdout = orig_stdout
 
     """
