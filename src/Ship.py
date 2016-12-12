@@ -25,7 +25,6 @@ class Ship:
     - orientation:   Ship orientation, in clockwise degrees
 
     - immovable:     True if the position is set at creation and the ship cannot later be moved.
-
     """
     def __init__(self, name, damageList, value, boardPosition=Position(0, 0), orientation='0', immovable=False):
         self.name = name
@@ -178,3 +177,4 @@ class Ship:
             if damage == 0:
                 amountDamaged += 1
         return amountDamaged
+
