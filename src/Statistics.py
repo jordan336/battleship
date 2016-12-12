@@ -7,13 +7,14 @@ from Action import Action
 from State import State
 import sys
 import shutil
+import time
 from StringIO import StringIO
 from TextDisplay import TextDisplay
 
 class Statistics:
 
     # path to this script, up one directory to the battleship directory, append '/stats/'
-    PREFIX_STATS_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__))) + '/stats/'
+    PREFIX_STATS_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__))) + '/stats/' + time.strftime("%Y%m%d-%H%M%S") + '/'
     PREFIX_CUMULHITS='hits_'
     PREFIX_ALL_GAMES='AllGames_'
     PREFIX_CUMULHITSALLGAMES='avgHits' + PREFIX_ALL_GAMES
