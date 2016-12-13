@@ -81,6 +81,7 @@ if __name__ == '__main__':
 
     avgNumMoves = {}
     avgScore = {}
+    wins = {}
 
     # statistics
     if args.stats or args.stats_all:
@@ -114,14 +115,20 @@ if __name__ == '__main__':
         gameStats = testGame.run()
 
         # output per game stats
-        for agent, (moves, score) in gameStats.iteritems():
-            print '{:17s}: Moves ({:3d}), Score({:3d})'.format(agent, int(moves), int(score))
+        for agent, (moves, score, win) in gameStats.iteritems():
+            print '{:17s}: Win({:d}), Moves ({:3d}), Score({:3d})'.format(agent, win, int(moves), int(score))
             if agent in avgNumMoves:
                 avgNumMoves[agent] += moves
                 avgScore[agent] += score
+                if win:
+                    wins[agent] += 1
             else:
                 avgNumMoves[agent] = moves
                 avgScore[agent] = score
+                if win:
+                    wins[agent] = 1
+                else:
+                    wins[agent] = 0
         if stats is not None:
             if args.stats:
                 stats.outputStatistics()
@@ -133,7 +140,7 @@ if __name__ == '__main__':
         print '==============================='
         print 'Number of test games played:', numTestGamesToPlay
         for agent in avgNumMoves:
-            print '{:17s}: Avg. number of moves taken ({:05.2f}), Avg. score({:06.2f})'.format(agent, (float(avgNumMoves[agent]) / numTestGamesToPlay), (float(avgScore[agent]) / numTestGamesToPlay))
+            print '{:17s}: Wins ({:03d}), Avg. number of moves taken ({:05.2f}), Avg. score({:06.2f})'.format(agent, wins[agent], (float(avgNumMoves[agent]) / numTestGamesToPlay), (float(avgScore[agent]) / numTestGamesToPlay))
     if stats is not None and args.stats_all:
         stats.outputAllGamesStatistics()
 

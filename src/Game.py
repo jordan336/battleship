@@ -81,11 +81,12 @@ class Game:
         print 'Game over! Here is the final game board:'
         self.drawCurrentState()
 
-        # Return total number of moves and final score for each agent
+        # Return total number of moves, final score, and win boolean for each agent
         returnStats = {}
         for agent in self.currentState.getAgents():
             moves = self.currentState.getMoveCount(agent)
             score = self.currentState.getScore(agent)
-            returnStats[agent] = (moves, score)
+            win = (self.currentState.getWinner() == agent)
+            returnStats[agent] = (moves, score, win)
         return returnStats
 

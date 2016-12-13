@@ -36,7 +36,7 @@ class State:
         self.gameBoards = gameBoards
         self.ships = ships
         self.torpedos = torpedos
-
+        self.winner = None
         self.scores = {}
         self.moveCounts = {}
         for agent in agents:
@@ -92,6 +92,9 @@ class State:
         else:
             return self.torpedos
 
+    def getWinner(self):
+        return self.winner
+
     def currentAgent(self):
         return self.nextAgentToMove
 
@@ -111,24 +114,34 @@ class State:
     If the every ship for an agent is sunk, return true.  Otherwise,
     all agents have at least one non-sunk ship.  Also, check if every
     agent has at least 1 torpedo left to fire, otherwise return true.
+
+    Update self.winner with the winner of the game, if this is an end
+    state.  The winner has the maximum score and at least 1 torpedo 
+    and at least 1 unsunk ship.
     """
     def isEnd(self):
 
         # Check if all ships sunk
-        for __, shipList in self.ships.iteritems():
+        for agent, shipList in self.ships.iteritems():
             agentSunk = True
             for ship in shipList:
                 if not ship.isSunk():
                     agentSunk = False
             if agentSunk:
+                winScores = copy.deepcopy(self.scores)
+                del winScores[agent]
+                self.winner = max(winScores, key=winScores.get)
                 return True
 
         # Check if out of torpedos
-        for __, torpedoList in self.torpedos.iteritems():
+        for agent, torpedoList in self.torpedos.iteritems():
             sumTorpedos = 0
             for (torpedo, count) in torpedoList.iteritems():
                 sumTorpedos += count
             if sumTorpedos <= 0:
+                winScores= copy.deepcopy(self.scores)
+                del winScores[agent]
+                self.winner = max(winScores, key=winScores.get)
                 return True
 
         return False

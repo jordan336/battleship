@@ -15,8 +15,6 @@ TODO List
 * More unit testing
 * Grid needs to handle case where there is a hit at a position, but the ship still has hit points at that position.
   An Agent should still be allowed to fire at a hit position in this case, or maybe its always allowed?
-* Scoring systems needs overhaul
-* Implement a logging system?
 
 
 Run Game
