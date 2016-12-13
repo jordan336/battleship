@@ -12,7 +12,7 @@ class HumanAgent(Agent):
     def drawCurrentState(self, state, opponentToAttack):
         board = state.getBoard(opponentToAttack)
         ships = state.getShips(opponentToAttack)
-        TextDisplay.draw(board, ships, True) 
+        TextDisplay.draw(board, ships, False) 
    
     def placeShips(self, board, ships): 
         Util.randomPlaceShips(board, ships)
