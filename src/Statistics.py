@@ -61,7 +61,6 @@ class Statistics:
                     shutil.copyfileobj (self.logBuffer[agentName], f)
                     f.close()
             self.logBuffer[agentName] = StringIO()
-            self.targetCounters[agentName] = []
             self.hitCounters[agentName] = []
         self.currentGameNum += 1
 
