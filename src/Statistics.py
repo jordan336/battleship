@@ -10,6 +10,7 @@ import shutil
 import time
 from StringIO import StringIO
 from TextDisplay import TextDisplay
+import colormaps as cmaps
 
 class Statistics:
 
@@ -191,7 +192,7 @@ class Statistics:
             targets_x = [t.x for t in self.targetCounters[agentName]]
             targets_y = [t.y for t in self.targetCounters[agentName]]
             pyplot.figure(figureCount, figsize=(9, 6))
-            pyplot.hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]])
+            pyplot.hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]], cmap='Blues', vmin=0, vmax=self.currentGameNum)
             pyplot.colorbar()
             pyplot.savefig(self.PREFIX_STATS_PATH+self.PREFIX_HEATMAP+self.PREFIX_ALL_GAMES+agentName, bbox_inches='tight')
             figureCount += 1
@@ -213,7 +214,7 @@ class Statistics:
             height = agentBoard.getHeight()
             targets_x = [t.x for t in self.targetCounters[agentName]]
             targets_y = [t.y for t in self.targetCounters[agentName]]
-            hist, xbins, ybins, im = axes[index].hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]])
+            hist, xbins, ybins, im = axes[index].hist2d(targets_x, targets_y, bins=[width, height], range=[[0, width-1],[0, height-1]], cmap='Blues', vmin=0, vmax=self.currentGameNum)
 
         figure.set_size_inches(9, 8.5)
         figure.colorbar(im, ax=axes.ravel().tolist())
