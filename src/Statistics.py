@@ -43,7 +43,7 @@ class Statistics:
             self.logBuffer[agent.getName()] = StringIO()
         # create the "stats" directory under battleship/, if it doesnt already exist
         if not os.path.isdir(self.PREFIX_STATS_PATH):
-            os.mkdir(self.PREFIX_STATS_PATH)
+            os.makedirs(self.PREFIX_STATS_PATH)
         
     """
     endGame()
