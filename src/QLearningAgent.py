@@ -5,7 +5,6 @@ from TorpedoAction import TorpedoAction
 import random
 import math
 import Util
-from TextDisplay import TextDisplay   # TODO remove
 
 def identityFeatureExtractor(state, action):
     featureKey = (state, action)
@@ -107,12 +106,6 @@ class QLearningAgent(Agent):
     # Here we use the epsilon-greedy algorithm: with probability
     # |epsilon|, take a random action.
     def getAction(self, state):
-
-        # TODO remove
-        if self.epsilon == 0:
-            opp = state.getOpponents(self.name)[0]
-            #TextDisplay.draw(state.getBoard(opp), state.getShips(opp), True) 
-
         self.numIters += 1
         if random.random() < self.epsilon:
             return random.choice(self.actions(state))
