@@ -61,11 +61,11 @@ Examples:
     python src/main.py -g 50 -t 100 -a QLearning -r ClassicStationary
         Train QLearning agent with 100 games, then play 50 test games using the ClassicStationary rules.
 
-    python src/main.py -g 10 -t 0 -a HuntAndTarget Random Random Random
-        Play 10 test games with 1 HuntAndTarget and 3 Random agents competing.
+    python src/main.py -g 10 -t 0 -a HuntAndTarget Human Random Random
+        Play 10 test games with 1 HuntAndTarget, 1 Human, and 2 Random agents competing.
 
-    python src/main.py -g 1 -t 0 -a QLearning Random -n John_QLearning Joe_Random
-        Play 1 test game with a QLearning agent (named John_QLearning) vs. a Random agent (named Joe_Random).
+    python src/main.py -g 1 -t 0 -a QLearning Human -n John_QLearning Joe_Human
+        Play 1 test game with a QLearning agent (named John_QLearning) vs. a Human agent (named Joe_Human).
 
     python src/main.py -g 1 -t 1 Random -r Classic -R Mini -c
         Play 1 training and 1 test game with the Random agent.  Training using Mini rules, play using Classic rules.  Use the same start state for all games.
@@ -74,4 +74,19 @@ Examples:
         Run the unit tests.
 
 --------------------------------------------
+
+Agents:
+
+    - Human          : Ask the human user for targets
+    - Random         : Randomly pick targets
+    - HuntAndTarget  : Randomly hunt, selectively target neighboring squares
+    - QLearning      : Reinforcement learning implementation
+
+
+Rules:
+
+    - Mini              : Very small board, one ship
+    - Classic           : Standard 10x10 board, 5 ships, unlimited torpedos
+    - OneShip           : Medium size board, 1 ship in the middle
+    - ClassicStationary : Standard board, 5 immovable ships
 
