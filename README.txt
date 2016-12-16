@@ -24,7 +24,7 @@ include plots, heatmaps, and textual game records.
 usage: main.py [-h] [-g GAMES] [-t TRAIN_ITERATIONS]
                [-a {Human,Random,HuntAndTarget,QLearning} [{Human,Random,HuntAndTarget,QLearning} ...]]
                [-n NAMES [NAMES ...]]
-               [-r {Classic,Mini,OneShip,ClassicStationary}]
+               [-r {Classic,Mini,OneShip,ClassicStationary,LargeClassic}]
                [-R {Classic,Mini,OneShip}] [-s] [-S] [-c]
 
 AI learning agent for the game of Battleship
