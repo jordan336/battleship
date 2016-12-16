@@ -4,6 +4,7 @@ from ClassicRules import ClassicRules
 from MiniGameRules import MiniGameRules
 from OneShipRules import OneShipRules
 from ClassicStationaryRules import ClassicStationaryRules
+from LargeClassicRules import LargeClassicRules
 from HumanAgent import HumanAgent
 from RandomAgent import RandomAgent
 from HuntAndTargetAgent import HuntAndTargetAgent
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--train_iterations', type=int, nargs=1, default=[10], help='Number of training games to play')
     parser.add_argument('-a', '--agents', nargs='+', default=['QLearning'], choices=['Human', 'Random', 'HuntAndTarget', 'QLearning'], help='Agents to play the game')
     parser.add_argument('-n', '--names', nargs='+', default=[], help='Agent names, specified in the same order as -a')
-    parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip', 'ClassicStationary'], help='Game rules')
+    parser.add_argument('-r', '--rules', nargs=1, default=['Classic'], choices=['Classic', 'Mini', 'OneShip', 'ClassicStationary', 'LargeClassic'], help='Game rules')
     parser.add_argument('-R', '--train_rules', nargs=1, default=['NotSet'], choices=['Classic', 'Mini', 'OneShip'], help='Game rules for training only')
     parser.add_argument('-s', '--stats', action='store_true', default=False, help='Output statistics for each game completed')
     parser.add_argument('-S', '--stats_all', action='store_true', default=False, help='Output statistics when all games are complete')
@@ -43,6 +44,8 @@ if __name__ == '__main__':
         rules = OneShipRules
     elif args.rules[0] == 'ClassicStationary':
         rules = ClassicStationaryRules
+    elif args.rules[0] == 'LargeClassic':
+        rules = LargeClassicRules
     else:
         rules = MiniGameRules
 

@@ -39,7 +39,7 @@ optional arguments:
                         Agents to play the game
   -n NAMES [NAMES ...], --names NAMES [NAMES ...]
                         Agent names, specified in the same order as -a
-  -r {Classic,Mini,OneShip,ClassicStationary}, --rules {Classic,Mini,OneShip,ClassicStationary}
+  -r {Classic,Mini,OneShip,ClassicStationary,LargeClassic}, --rules {Classic,Mini,OneShip,ClassicStationary,LargeClassic}
                         Game rules
   -R {Classic,Mini,OneShip}, --train_rules {Classic,Mini,OneShip}
                         Game rules for training only
@@ -89,4 +89,5 @@ Rules:
     - Classic           : Standard 10x10 board, 5 ships, unlimited torpedos
     - OneShip           : Medium size board, 1 ship in the middle
     - ClassicStationary : Standard board, 5 immovable ships
+    - LargeClassic      : Very large board, classic rules
 
