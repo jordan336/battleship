@@ -2,6 +2,13 @@ from Agent import Agent
 from Position import Position
 import Util
 
+"""
+NoOpAgent implementing the Agent interface
+
+This Agent takes no action and randomly places
+its ships.  This Agent is used as an opponent
+when testing another Agent individually.
+"""
 class NoOpAgent(Agent):
 
     def __init__(self, name):

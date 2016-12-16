@@ -2,6 +2,12 @@
 from Position import Position
 from Grid import Grid
 
+"""
+TextDisplay implementing Display interface
+
+TextDisplay class provides a representation of
+the game state to stdout.
+"""
 class TextDisplay:
 
     @staticmethod    

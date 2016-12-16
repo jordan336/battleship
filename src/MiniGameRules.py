@@ -4,6 +4,11 @@ from Ship import Ship
 from ClassicTorpedo import ClassicTorpedo
 from Grid import Grid
 
+"""
+MiniGameRules implementing Rules interface
+
+Rules with a small game board and one ship.
+"""
 class MiniGameRules(Rules):
 
     @staticmethod

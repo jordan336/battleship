@@ -4,6 +4,11 @@ from Ship import Ship
 from ClassicTorpedo import ClassicTorpedo
 from Grid import Grid
 
+"""
+OneShipRules implementing Rules interface
+
+Rules with one ship in the middle of a medium size board.
+"""
 class OneShipRules(Rules):
 
     @staticmethod

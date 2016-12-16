@@ -1,4 +1,10 @@
 
+"""
+Position class
+
+This class stores the X and Y coordinates of
+one square on the game board.
+"""
 class Position:
 
     def __init__(self, xPosition, yPosition):

@@ -1,5 +1,18 @@
 from Position import Position
 
+"""
+Ship class
+
+The Ship class contains the position, orientation, hit points,
+and point value of a ship.  Ships are located on the Grid game
+board, with the left most square serving as the ship's position.
+Each Ship can be oriented in one of 4 orientations, which are
+rotations of the ship around the left most square.
+
+Ships should support being placed, taking damage after being hit
+by a torpedo, and reporting the score value based on the damage
+the ship has sustained.
+"""
 class Ship:
 
     ORIENTATION_0_DEG   = '0'
@@ -115,8 +128,6 @@ class Ship:
     Return the number of points earned for the damage done to this ship.
     The score is defined as the percentage of ship segments that are completely
     destroyed times the total ship value.
-
-    TODO: support more sophisticated score functions?
     """
     def getScore(self):
         amountDamaged = 0.0

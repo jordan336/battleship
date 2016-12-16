@@ -1,5 +1,13 @@
 from Agent import Agent
 
+"""
+Rules interface
+
+The Rules interface provides the methods necessary to 
+set up a new game of Battleship.  The Rules includes the 
+game boards, amount and type of ships, and amount and type
+of torpedos every Agent is allocated.
+"""
 class Rules:
 
     """

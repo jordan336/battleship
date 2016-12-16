@@ -6,12 +6,22 @@ import random
 import math
 import Util
 
+"""
+identityFeatureExtractor()
+
+Rote learning feature extractor.
+"""
 def identityFeatureExtractor(state, action):
     featureKey = (state, action)
     featureValue = 1
     return [(featureKey, featureValue)]
 
 
+"""
+featureExtractor()
+
+More advanced feature extractor, intended for all uses.
+"""
 def featureExtractor(state, action):
     features = []
     sunkPositions = []
@@ -41,12 +51,6 @@ def featureExtractor(state, action):
     if hitColDist != -1:
         features.append(('hitColDist='+str(hitColDist), 1))
 
-    # missing distances are killing performance, not fully understood why yet
-    #missRowDist = opponentBoard.getDistNearestSameRowMiss(targetX, targetY, sunkPositions)
-    #missColDist = opponentBoard.getDistNearestSameColMiss(targetX, targetY, sunkPositions)
-    #features.append(('missRowDist='+str(missRowDist), 1))
-    #features.append(('missColDist='+str(missColDist), 1))
-
     # continuous hits if targeting
     if not hunting:
         continuousVerticalHits = opponentBoard.getContinuousVerticalHits(targetX, targetY)
@@ -66,6 +70,13 @@ def featureExtractor(state, action):
 
     return features
 
+"""
+QLearningAgent implementing the Agent interface
+
+An implementation of the QLearning reinforcement learning 
+algorithm with function approximation.  This Agent will
+learn the optimal policy when playing the Battleship game.
+"""
 class QLearningAgent(Agent):
 
     def __init__(self, name):

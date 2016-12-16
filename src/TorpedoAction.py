@@ -2,10 +2,11 @@
 from Action import Action
 
 """
-TorpedoAction
+TorpedoAction implementing Action interface
 
-Fullfill the Action interface with the type
-ACITON_TYPE_FIRE_TORPEDO.
+The TorpedoAction is an Action that represents
+firing a Torpedo at a target location and a
+target agent.
 """
 class TorpedoAction(Action):
 

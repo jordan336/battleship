@@ -11,6 +11,11 @@ from QLearningAgent import QLearningAgent
 from NoOpAgent import NoOpAgent
 from Statistics import Statistics
 
+"""
+Battleship game entry function
+
+Parse input arguments, create the necessary classes, and start the Games.
+"""
 if __name__ == '__main__':
 
     # Parse command line arguments

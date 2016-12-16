@@ -1,5 +1,12 @@
 from Torpedo import Torpedo
 
+"""
+ClassicTorpedo implementing Torpedo interface
+
+A classic Battleship torpedo, it does 1 hitpoint
+worth of damage on the single square it was 
+shot at.
+"""
 class ClassicTorpedo(Torpedo):
     
     TORPEDO_TYPE_CLASSIC = "classic"

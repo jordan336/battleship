@@ -4,6 +4,13 @@ from TorpedoAction import TorpedoAction
 from TextDisplay import TextDisplay
 import Util
 
+"""
+HumanAgent implementing Agent interface
+
+This Agent fulfills the Agent interface to allow
+a human to play Battleship.  Display the current game
+state and ask the user for his desired action.
+"""
 class HumanAgent(Agent):
 
     def __init__(self, name):

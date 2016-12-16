@@ -5,7 +5,9 @@ from HumanAgent import HumanAgent
 from Statistics import Statistics
 
 """
-    The Game manages the control flow, soliciting actions from agents.
+Game 
+    
+The Game manages the control flow, soliciting actions from agents.
 """
 class Game:
 
@@ -30,6 +32,13 @@ class Game:
                 return index
         raise RuntimeError("Agent " + agentName + " not in agents list")
  
+    """
+    startState()
+
+    Create the Game start state.  For every Agent, ask the given rules
+    module how many ships and torpedos the Agent is allowed, and what 
+    game board the Agent is given.  Allow the Agent to place his ships.
+    """
     def startState(self):
         agentNames = []
         boards = {}
@@ -47,6 +56,13 @@ class Game:
         newState = State(agentNames, boards, ships, torpedos)
         return newState
         
+    """
+    run()
+
+    Run the game until an end state is reached.  Maintain
+    statistics about the game and report game experience to
+    the Agents, in case they are learning Agents.
+    """
     def run(self):
 
         # Get the initial state.

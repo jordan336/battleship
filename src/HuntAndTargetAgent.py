@@ -4,6 +4,13 @@ from TorpedoAction import TorpedoAction
 import random
 import Util
 
+"""
+Hunt and Target agent implementing the Agent interface
+
+The Hunt and Target agent will randomly search the board.
+After hitting an enemy ship, the Hunt and Target agent 
+will attack surrounding squares until the ship is sunk.
+"""
 class HuntAndTargetAgent(Agent):
 
     def __init__(self, name):

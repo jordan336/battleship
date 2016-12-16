@@ -4,6 +4,11 @@ from Ship import Ship
 from ClassicTorpedo import ClassicTorpedo
 from Grid import Grid
 
+"""
+ClassicStationaryRules
+
+Classic rules, but the ships cannot be moved after initial placement.
+"""
 class ClassicStationaryRules(Rules):
 
     @staticmethod

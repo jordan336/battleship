@@ -17,8 +17,6 @@ an Action, then call only the supported methods for that type.
 class Action:
 
     ACTION_TYPE_FIRE_TORPEDO = "fireTorpedo" 
-    # TODO
-    #ACTION_TYPE_MOVE_SHIP = "moveShip" 
 
     def __init__(self, type):
         self.actionType = type

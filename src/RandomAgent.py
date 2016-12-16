@@ -4,6 +4,12 @@ from TorpedoAction import TorpedoAction
 import random
 import Util
 
+"""
+RandomAgent implementing the Agent interface
+
+The RandomAgent will randomly place his ships and
+randomly pick targets to attack.
+"""
 class RandomAgent(Agent):
 
     def __init__(self, name):

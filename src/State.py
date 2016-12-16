@@ -152,9 +152,6 @@ class State:
     Return a number representing the current game score for the given agent.
     Currently, add up the score from every opponent ship.
 
-    TODO: This doesn't work if we have more than 2 Agents.  Instead, we should
-          base the score on the Agent's statisitics, see above comment.
-
     - agentName: The Agent's score to get 
     """
     def getScore(self, agentName):
@@ -252,7 +249,6 @@ class State:
                     if damage > 0:
                         hit = True
                         if verbose: print ship.getName() + " has been hit!!"
-                        #TODO: setHitPosition should take the damage
                         self.gameBoards[targetAgentName].setHitPosition(shipPosition)
                         ship.takeDamage_Position(shipPosition, damage)
                         if verbose: 

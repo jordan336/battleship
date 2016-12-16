@@ -1,6 +1,13 @@
-
 from Position import Position
 
+"""
+Grid class
+
+The Grid class represents one Agent's game board.
+The Grid contains the dimensions of the board and 
+the state of each square, whether it was a hit, miss, or
+has not been explored.
+"""
 class Grid:
 
     def __init__(self, width, height):

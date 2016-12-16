@@ -12,6 +12,18 @@ from StringIO import StringIO
 from TextDisplay import TextDisplay
 import colormaps as cmaps
 
+"""
+Statistics class
+
+The Statistics module records statistics about games of 
+Battleship that are played.  At the end of a game or at the end
+of all games played, the Statistics module can output a textual
+record of the games player, plots of the performance of Agents,
+and heatmaps of Agent target locations.
+
+The resulting files will be written to the directory:
+    battleship/stats/<timestamp>/
+"""
 class Statistics:
 
     # path to this script, up one directory to the battleship directory, append '/stats/'
